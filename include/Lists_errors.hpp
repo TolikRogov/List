@@ -16,7 +16,9 @@
 enum ListStatusCode {
 	LIST_NO_ERROR,
 
-	LIST_ALLOC_ERROR
+	LIST_ALLOC_ERROR,
+
+	LIST_FULL_LIST
 };
 
 const char* ListErrorsMessenger(ListStatusCode status);

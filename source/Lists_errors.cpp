@@ -6,6 +6,8 @@ const char* ListErrorsMessenger(ListStatusCode status) {
 
 		case LIST_ALLOC_ERROR:					return "LIST ERROR - MEMORY ALLOCATION ERROR";
 
+		case LIST_FULL_LIST:					return "LIST ERROR - LIST IS FULL";
+
 		default: 								return "LIST ERROR - UNDEFINED ERROR";
 	}
 }

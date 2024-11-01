@@ -1,6 +1,4 @@
  digraph {
-    MBAPPE[color="pink"];
-
   DED->LOH->DED;
   FC_PRODVA->TOP;
   FC_PRODVA->CHO_MOLCHIM;
