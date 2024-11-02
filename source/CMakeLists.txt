@@ -18,7 +18,7 @@ add_library(
 	Lists.cpp
 )
 
-add_compile_definitions(LIST_CONSOLE_DUMP)
+#add_compile_definitions(LIST_CONSOLE_DUMP)
 
 add_executable(${projectName} main.cpp)
 

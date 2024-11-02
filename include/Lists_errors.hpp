@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LISTS_ERRORS_INCLUDE
+#define LISTS_ERRORS_INCLUDE
 
 #define RED(str) 		"\033[31;1m" str "\033[0m"
 #define YELLOW(str) 	"\033[33;4m" str "\033[0m"
@@ -18,7 +19,16 @@ enum ListStatusCode {
 
 	LIST_ALLOC_ERROR,
 
-	LIST_FULL_LIST
+	LIST_FULL_LIST,
+	LIST_SIZE_ABOVE_CAPACITY,
+
+	LIST_WRONG_FREE_ELEMENT,
+	LIST_WRONG_ELEMENT_POSITION,
+
+	LIST_FILE_OPEN_ERROR,
+	LIST_FILE_CLOSE_ERROR
 };
 
 const char* ListErrorsMessenger(ListStatusCode status);
+
+#endif //LISTS_ERRORS_INCLUDE

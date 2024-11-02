@@ -1,4 +1,5 @@
-#pragma once
+#ifndef LISTS_INCLUDE
+#define LISTS_INCLUDE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,6 +21,11 @@ typedef int Indexes_t;
 	list_status = ListCtor(list __VA_ARGS__);			\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
+}
+
+#define LIST_VERIFY(list, ...) {						\
+	list_status = ListVerify(list, __VA_ARGS__);		\
+	LIST_ERROR_CHECK(list_status);						\
 }
 
 #define LIST_INSERT_AFTER(list, ...) {					\
@@ -46,8 +52,6 @@ struct Data_elem {
 };
 
 struct List {
-	Indexes_t head;
-	Indexes_t tail;
 	Indexes_t free;
 
 	size_t capacity;
@@ -61,11 +65,20 @@ const size_t LIST_TRASH = 0xDED104;
 
 const Data_t LIST_POISON = -666;
 
+const size_t REALLOC_INDEX = 2;
+
 ListStatusCode ListCtor(List* list);
 ListStatusCode ListDtor(List* list);
 
+ListStatusCode ListVerify(List* list, Indexes_t pos);
+ListStatusCode ListRealloc(List* list);
+
 ListStatusCode FindFree(List* list);
+Indexes_t ListGetHead(List* list);
+Indexes_t ListGetTail(List* list);
 
 ListStatusCode ListInsertAfter(List* list, Data_t element, Indexes_t pos);
 
 ListStatusCode ListOutsert(List* list, Data_t* var_addr, Indexes_t pos);
+
+#endif //LISTS_INCLUDE
