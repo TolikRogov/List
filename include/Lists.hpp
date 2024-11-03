@@ -64,7 +64,7 @@ struct List {
 	Data_elem* elems;
 };
 
-const size_t LIST_DEFAULT_DATA_CAPACITY = 20;
+const size_t LIST_DEFAULT_DATA_CAPACITY = 50;
 
 const size_t LIST_TRASH = 0xDED104;
 

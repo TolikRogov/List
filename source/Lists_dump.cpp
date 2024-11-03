@@ -9,6 +9,7 @@ ListStatusCode ListGraphDump(List* list) {
 	fprintf(dot_file, "digraph {\n");
 
 	fprintf(dot_file, "\trankdir = LR;\n");
+	fprintf(dot_file, "\tfontname = \"UbuntuMono\";\n");
 
 	ListGraphFreeCluster(list, dot_file);
 	ListGraphCaptiveCluster(list, dot_file);
@@ -25,27 +26,39 @@ ListStatusCode ListGraphDump(List* list) {
 
 ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
 
+	const char* BG_COLOR = "\"#FBC4AB\"";
+	const char* EDGE_COLOR = "\"#F4978E\"";
+	const char* EDGE_BORDER_COLOR = "\"#B55757\"";
+	const char* CLUSTER_BORDER_COLOR = "\"#966156\"";
+	const char* PREV_ARROWS_COLOR = "\"#228B22\"";
+	const char* NEXT_ARROWS_COLOR = "\"#DC143C\"";
+
 	fprintf(dot_file, "\n");
 
 	fprintf(dot_file, "\tsubgraph cluster_captive {\n");
+	fprintf(dot_file, "\t\tbgcolor = %s;\n", BG_COLOR);
+	fprintf(dot_file, "\t\tcolor = %s;\n", CLUSTER_BORDER_COLOR);
+	fprintf(dot_file, "\t\tlabel = <<B>Occupied cells</B>>;\n");
+	fprintf(dot_file, "\t\tfontcolor = \"#2F4858\";\n");
+	fprintf(dot_file, "\t\tfontsize = \"20px\";\n");
 
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
-						 i, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
+						 i, EDGE_COLOR, EDGE_BORDER_COLOR, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
 	}
 
 	fprintf(dot_file, "\n");
 
-	fprintf(dot_file, "\t\tnode%.3d -> node%.3d [label = \"0\"];\n", 0, 0);
+	fprintf(dot_file, "\t\tnode%.3d -> node%.3d [label = \"0\"; color = \"#9400D3\"; ];\n", 0, 0);
 
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = red; ];\n", i, list->elems[i].next);
+		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, NEXT_ARROWS_COLOR);
 	}
 
 	fprintf(dot_file, "\n");
@@ -54,7 +67,7 @@ ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = blue; ];\n", i, list->elems[i].prev);
+		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].prev, PREV_ARROWS_COLOR);
 	}
 
 	fprintf(dot_file, "\t}\n");
@@ -66,31 +79,55 @@ ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
 
 ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
 
+	const char* BG_COLOR = "\"#DCEAB2\"";
+	const char* EDGE_COLOR = "\"#5F9A9D\"";
+	const char* EDGE_BORDER_COLOR = "\"#3B6874\"";
+	const char* CLUSTER_BORDER_COLOR = "\"#b1c274\"";
+
 	fprintf(dot_file, "\n");
 
 	fprintf(dot_file, "\tsubgraph cluster_free {\n");
+	fprintf(dot_file, "\t\tbgcolor = %s;\n", BG_COLOR);
+	fprintf(dot_file, "\t\tcolor = %s;\n", CLUSTER_BORDER_COLOR);
+	fprintf(dot_file, "\t\tlabel = <<B>Free cells</B>>;\n");
+	fprintf(dot_file, "\t\tfontcolor = \"#2F4858\";\n");
+	fprintf(dot_file, "\t\tfontsize = \"20px\";\n");
 
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev != -1)
 			continue;
 
-		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
-						 i, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
+						 i, EDGE_COLOR, EDGE_BORDER_COLOR, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
 	}
 
 	fprintf(dot_file, "\n");
 
 	Indexes_t free = 0;
-	for (size_t i = 0, j = 0; i < list->capacity; i++) {
+	size_t new_line = 0;
+	fprintf(dot_file, "\t\tsubgraph cluster_free%.3d {\n", 0);
+	fprintf(dot_file, "\t\t\tperipheries = 0\n");
+	fprintf(dot_file, "\t\t\tlabel = \"\";\n");
+	for (size_t i = 0, cnt = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev != -1)
 			continue;
 
-		if (j++ == 0 && (free = i))
+		if (cnt == 0 && (free = new_line = i)) {
+			cnt++;
 			continue;
+		}
 
-		fprintf(dot_file, "\t\tnode%.3d -> node%.3zu [ weight = 1000; color = white; ];\n", free, i);
+		if (cnt++ % 10 == 0) {
+			fprintf(dot_file, "\t\t}\n\n");
+			fprintf(dot_file, "\t\tsubgraph cluster_free%.3zu {\n", cnt / 10);
+			fprintf(dot_file, "\t\t\tperipheries = 0\n");
+			fprintf(dot_file, "\t\t\tlabel = \"\";\n");
+		}
+		else
+			fprintf(dot_file, "\t\t\tnode%.3d -> node%.3zu [ weight = 1000; color = %s; ];\n", free, i, BG_COLOR);
 		free = i;
 	}
+	fprintf(dot_file, "\t\t}\n\n");
 
 	fprintf(dot_file, "\n");
 
