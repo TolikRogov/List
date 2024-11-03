@@ -8,34 +8,10 @@ ListStatusCode ListGraphDump(List* list) {
 
 	fprintf(dot_file, "digraph {\n");
 
-	for (size_t i = 0; i < list->capacity; i++)
-		fprintf(dot_file, "\tnode%.3zu [shape = Mrecord; label = \" { %.3zu | data = %d | next = %d | prev = %d } \" ];\n",
-						 i, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+	fprintf(dot_file, "\trankdir = LR;\n");
 
-	fprintf(dot_file, "\n");
-
-// 	for (size_t i = 0; i < list->capacity - 1; i++)
-// 		fprintf(dot_file, "\tnode%.3zu -> node%.3zu [ weight = 1000; color = white; ];\n", i, i + 1);
-//
-// 	fprintf(dot_file, "\n");
-
-	fprintf(dot_file, "\tnode%.3d -> node%.3d [label = \"0\"];\n", 0, 0);
-
-	for (size_t i = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev == -1)
-			continue;
-
-		fprintf(dot_file, "\tnode%.3zu -> node%.3d [ color = red; ];\n", i, list->elems[i].next);
-	}
-
-	fprintf(dot_file, "\n");
-
-	for (size_t i = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev == -1)
-			continue;
-
-		fprintf(dot_file, "\tnode%.3zu -> node%.3d [ color = blue; ];\n", i, list->elems[i].prev);
-	}
+	ListGraphFreeCluster(list, dot_file);
+	ListGraphCaptiveCluster(list, dot_file);
 
 	fprintf(dot_file, "}\n");
 
@@ -43,6 +19,84 @@ ListStatusCode ListGraphDump(List* list) {
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
 	system("dot ../dump/graph.dot -Tpng -o ../dump/graph.png");
+
+	return LIST_NO_ERROR;
+}
+
+ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
+
+	fprintf(dot_file, "\n");
+
+	fprintf(dot_file, "\tsubgraph cluster_captive {\n");
+
+	for (size_t i = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev == -1)
+			continue;
+
+		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
+						 i, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+	}
+
+	fprintf(dot_file, "\n");
+
+	fprintf(dot_file, "\t\tnode%.3d -> node%.3d [label = \"0\"];\n", 0, 0);
+
+	for (size_t i = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev == -1)
+			continue;
+
+		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = red; ];\n", i, list->elems[i].next);
+	}
+
+	fprintf(dot_file, "\n");
+
+	for (size_t i = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev == -1)
+			continue;
+
+		fprintf(dot_file, "\t\tnode%.3zu -> node%.3d [ color = blue; ];\n", i, list->elems[i].prev);
+	}
+
+	fprintf(dot_file, "\t}\n");
+
+	fprintf(dot_file, "\n");
+
+	return LIST_NO_ERROR;
+}
+
+ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
+
+	fprintf(dot_file, "\n");
+
+	fprintf(dot_file, "\tsubgraph cluster_free {\n");
+
+	for (size_t i = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev != -1)
+			continue;
+
+		fprintf(dot_file, "\t\tnode%.3zu [ shape = Mrecord; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
+						 i, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+	}
+
+	fprintf(dot_file, "\n");
+
+	Indexes_t free = 0;
+	for (size_t i = 0, j = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev != -1)
+			continue;
+
+		if (j++ == 0 && (free = i))
+			continue;
+
+		fprintf(dot_file, "\t\tnode%.3d -> node%.3zu [ weight = 1000; color = white; ];\n", free, i);
+		free = i;
+	}
+
+	fprintf(dot_file, "\n");
+
+	fprintf(dot_file, "\t}\n");
+
+	fprintf(dot_file, "\n");
 
 	return LIST_NO_ERROR;
 }

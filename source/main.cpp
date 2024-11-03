@@ -12,8 +12,10 @@ int main() {
 	for (size_t i = 10, j = 0; i < 100 && j < list.capacity; i += 10, j++)
 		LIST_INSERT_AFTER(&list, i, j);
 
-	list_status = ListGraphDump(&list);
-	LIST_ERROR_CHECK(list_status);
+	Data_t x = 0;
+	LIST_OUTSERT(&list, &x, 5);
+
+	LIST_GRAPH_DUMP(&list);
 
 	LIST_DTOR(&list);
 

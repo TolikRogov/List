@@ -119,6 +119,9 @@ ListStatusCode ListOutsert(List* list, Data_t* var_addr, Indexes_t pos) {
 
 	list->size--;
 
+	list_status = FindFree(list);
+	LIST_ERROR_CHECK(list_status);
+
 	return LIST_NO_ERROR;
 }
 

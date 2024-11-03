@@ -45,6 +45,11 @@ typedef int Indexes_t;
 	LIST_ERROR_CHECK(list_status);						\
 }
 
+#define LIST_GRAPH_DUMP(list, ...) {					\
+	list_status = ListGraphDump(list __VA_ARGS__);		\
+	LIST_ERROR_CHECK(list_status);						\
+}
+
 struct Data_elem {
 	Indexes_t prev;
 	Data_t data;
