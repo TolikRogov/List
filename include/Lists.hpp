@@ -8,6 +8,8 @@
 typedef int Data_t;
 typedef int Indexes_t;
 
+#define INIT_LIST(list) List list = { .info = {#list, __FILE__, __LINE__}}
+
 #ifdef LIST_CONSOLE_DUMP
 	#define LST_CON_DUMP_(list)	{			\
 		list_status = ListPrint(list);		\
@@ -50,6 +52,17 @@ typedef int Indexes_t;
 	LIST_ERROR_CHECK(list_status);						\
 }
 
+#define LIST_HTML_DUMP(list, ...) {						\
+	list_status = ListHtmlDump(list __VA_ARGS__);		\
+	LIST_ERROR_CHECK(list_status);						\
+}
+
+struct ListLogInfo {
+	const char* name;
+	const char* file_name;
+	const size_t line;
+};
+
 struct Data_elem {
 	Indexes_t prev;
 	Data_t data;
@@ -62,15 +75,19 @@ struct List {
 	size_t capacity;
 	size_t size;
 	Data_elem* elems;
+
+	ListLogInfo info;
 };
 
-const size_t LIST_DEFAULT_DATA_CAPACITY = 50;
+const size_t LIST_DEFAULT_DATA_CAPACITY = 20;
 
 const size_t LIST_TRASH = 0xDED104;
 
 const Data_t LIST_POISON = -666;
 
 const size_t REALLOC_INDEX = 2;
+
+const size_t GRAPH_DUMP_INDEX = 10;
 
 ListStatusCode ListCtor(List* list);
 ListStatusCode ListDtor(List* list);

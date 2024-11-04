@@ -5,7 +5,7 @@ int main() {
 
 	ListStatusCode list_status = LIST_NO_ERROR;
 
-	List list = {};
+	INIT_LIST(list);
 
 	LIST_CTOR(&list);
 
@@ -15,7 +15,7 @@ int main() {
 	Data_t x = 0;
 	LIST_OUTSERT(&list, &x, 5);
 
-	LIST_GRAPH_DUMP(&list);
+	LIST_HTML_DUMP(&list);
 
 	LIST_DTOR(&list);
 

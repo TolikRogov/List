@@ -1,6 +1,7 @@
 digraph {
 	rankdir = LR;
 	fontname = "UbuntuMono";
+	bgcolor = "#F1D1D1";
 
 	subgraph cluster_free {
 		bgcolor = "#DCEAB2";
@@ -8,110 +9,50 @@ digraph {
 		label = <<B>Free cells</B>>;
 		fontcolor = "#2F4858";
 		fontsize = "20px";
-		node005 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 005 | data = -666 | next = -1 | prev = -1 " ];
-		node010 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 010 | data = -666 | next = -1 | prev = -1 " ];
-		node011 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 011 | data = -666 | next = -1 | prev = -1 " ];
-		node012 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 012 | data = -666 | next = -1 | prev = -1 " ];
-		node013 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 013 | data = -666 | next = -1 | prev = -1 " ];
-		node014 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 014 | data = -666 | next = -1 | prev = -1 " ];
-		node015 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 015 | data = -666 | next = -1 | prev = -1 " ];
-		node016 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 016 | data = -666 | next = -1 | prev = -1 " ];
-		node017 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 017 | data = -666 | next = -1 | prev = -1 " ];
-		node018 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 018 | data = -666 | next = -1 | prev = -1 " ];
-		node019 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 019 | data = -666 | next = -1 | prev = -1 " ];
-		node020 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 020 | data = -666 | next = -1 | prev = -1 " ];
-		node021 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 021 | data = -666 | next = -1 | prev = -1 " ];
-		node022 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 022 | data = -666 | next = -1 | prev = -1 " ];
-		node023 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 023 | data = -666 | next = -1 | prev = -1 " ];
-		node024 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 024 | data = -666 | next = -1 | prev = -1 " ];
-		node025 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 025 | data = -666 | next = -1 | prev = -1 " ];
-		node026 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 026 | data = -666 | next = -1 | prev = -1 " ];
-		node027 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 027 | data = -666 | next = -1 | prev = -1 " ];
-		node028 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 028 | data = -666 | next = -1 | prev = -1 " ];
-		node029 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 029 | data = -666 | next = -1 | prev = -1 " ];
-		node030 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 030 | data = -666 | next = -1 | prev = -1 " ];
-		node031 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 031 | data = -666 | next = -1 | prev = -1 " ];
-		node032 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 032 | data = -666 | next = -1 | prev = -1 " ];
-		node033 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 033 | data = -666 | next = -1 | prev = -1 " ];
-		node034 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 034 | data = -666 | next = -1 | prev = -1 " ];
-		node035 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 035 | data = -666 | next = -1 | prev = -1 " ];
-		node036 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 036 | data = -666 | next = -1 | prev = -1 " ];
-		node037 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 037 | data = -666 | next = -1 | prev = -1 " ];
-		node038 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 038 | data = -666 | next = -1 | prev = -1 " ];
-		node039 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 039 | data = -666 | next = -1 | prev = -1 " ];
-		node040 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 040 | data = -666 | next = -1 | prev = -1 " ];
-		node041 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 041 | data = -666 | next = -1 | prev = -1 " ];
-		node042 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 042 | data = -666 | next = -1 | prev = -1 " ];
-		node043 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 043 | data = -666 | next = -1 | prev = -1 " ];
-		node044 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 044 | data = -666 | next = -1 | prev = -1 " ];
-		node045 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 045 | data = -666 | next = -1 | prev = -1 " ];
-		node046 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 046 | data = -666 | next = -1 | prev = -1 " ];
-		node047 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 047 | data = -666 | next = -1 | prev = -1 " ];
-		node048 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 048 | data = -666 | next = -1 | prev = -1 " ];
-		node049 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 049 | data = -666 | next = -1 | prev = -1 " ];
 
-		subgraph cluster_free000 {
+		subgraph cluster_Free {
 			peripheries = 0
 			label = "";
-			node005 -> node010 [ weight = 1000; color = "#DCEAB2"; ];
-			node010 -> node011 [ weight = 1000; color = "#DCEAB2"; ];
-			node011 -> node012 [ weight = 1000; color = "#DCEAB2"; ];
-			node012 -> node013 [ weight = 1000; color = "#DCEAB2"; ];
-			node013 -> node014 [ weight = 1000; color = "#DCEAB2"; ];
-			node014 -> node015 [ weight = 1000; color = "#DCEAB2"; ];
-			node015 -> node016 [ weight = 1000; color = "#DCEAB2"; ];
-			node016 -> node017 [ weight = 1000; color = "#DCEAB2"; ];
-			node017 -> node018 [ weight = 1000; color = "#DCEAB2"; ];
+			nodeFree [ shape = Mrecord; style = filled; fillcolor = "#D1D1D5"; color = "#C1C1C5"; fontcolor = "black"; label = "FREE"; ];
 		}
 
-		subgraph cluster_free001 {
+		subgraph cluster_free {
 			peripheries = 0
 			label = "";
-			node019 -> node020 [ weight = 1000; color = "#DCEAB2"; ];
-			node020 -> node021 [ weight = 1000; color = "#DCEAB2"; ];
-			node021 -> node022 [ weight = 1000; color = "#DCEAB2"; ];
-			node022 -> node023 [ weight = 1000; color = "#DCEAB2"; ];
-			node023 -> node024 [ weight = 1000; color = "#DCEAB2"; ];
-			node024 -> node025 [ weight = 1000; color = "#DCEAB2"; ];
-			node025 -> node026 [ weight = 1000; color = "#DCEAB2"; ];
-			node026 -> node027 [ weight = 1000; color = "#DCEAB2"; ];
-			node027 -> node028 [ weight = 1000; color = "#DCEAB2"; ];
+			node005 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 005 | data = -666 | next = -1 | prev = -1 " ];
+			node010 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 010 | data = -666 | next = -1 | prev = -1 " ];
+			node011 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 011 | data = -666 | next = -1 | prev = -1 " ];
+			node012 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 012 | data = -666 | next = -1 | prev = -1 " ];
+			node013 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 013 | data = -666 | next = -1 | prev = -1 " ];
+			node014 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 014 | data = -666 | next = -1 | prev = -1 " ];
+			node015 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 015 | data = -666 | next = -1 | prev = -1 " ];
+			node016 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 016 | data = -666 | next = -1 | prev = -1 " ];
+			node017 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 017 | data = -666 | next = -1 | prev = -1 " ];
+			node018 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 018 | data = -666 | next = -1 | prev = -1 " ];
+			node019 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 019 | data = -666 | next = -1 | prev = -1 " ];
+
+			subgraph cluster_free000 {
+				peripheries = 0
+				label = "";
+				node005 -> node010 [ weight = 1000; color = "#DCEAB2"; ];
+				node010 -> node011 [ weight = 1000; color = "#DCEAB2"; ];
+				node011 -> node012 [ weight = 1000; color = "#DCEAB2"; ];
+				node012 -> node013 [ weight = 1000; color = "#DCEAB2"; ];
+				node013 -> node014 [ weight = 1000; color = "#DCEAB2"; ];
+				node014 -> node015 [ weight = 1000; color = "#DCEAB2"; ];
+				node015 -> node016 [ weight = 1000; color = "#DCEAB2"; ];
+				node016 -> node017 [ weight = 1000; color = "#DCEAB2"; ];
+				node017 -> node018 [ weight = 1000; color = "#DCEAB2"; ];
+			}
+
+			subgraph cluster_free001 {
+				peripheries = 0
+				label = "";
+			}
+
+			nodeFree -> node005 [ weight = 1000; color = "#34AB34"; ];
+
 		}
-
-		subgraph cluster_free002 {
-			peripheries = 0
-			label = "";
-			node029 -> node030 [ weight = 1000; color = "#DCEAB2"; ];
-			node030 -> node031 [ weight = 1000; color = "#DCEAB2"; ];
-			node031 -> node032 [ weight = 1000; color = "#DCEAB2"; ];
-			node032 -> node033 [ weight = 1000; color = "#DCEAB2"; ];
-			node033 -> node034 [ weight = 1000; color = "#DCEAB2"; ];
-			node034 -> node035 [ weight = 1000; color = "#DCEAB2"; ];
-			node035 -> node036 [ weight = 1000; color = "#DCEAB2"; ];
-			node036 -> node037 [ weight = 1000; color = "#DCEAB2"; ];
-			node037 -> node038 [ weight = 1000; color = "#DCEAB2"; ];
-		}
-
-		subgraph cluster_free003 {
-			peripheries = 0
-			label = "";
-			node039 -> node040 [ weight = 1000; color = "#DCEAB2"; ];
-			node040 -> node041 [ weight = 1000; color = "#DCEAB2"; ];
-			node041 -> node042 [ weight = 1000; color = "#DCEAB2"; ];
-			node042 -> node043 [ weight = 1000; color = "#DCEAB2"; ];
-			node043 -> node044 [ weight = 1000; color = "#DCEAB2"; ];
-			node044 -> node045 [ weight = 1000; color = "#DCEAB2"; ];
-			node045 -> node046 [ weight = 1000; color = "#DCEAB2"; ];
-			node046 -> node047 [ weight = 1000; color = "#DCEAB2"; ];
-			node047 -> node048 [ weight = 1000; color = "#DCEAB2"; ];
-		}
-
-		subgraph cluster_free004 {
-			peripheries = 0
-			label = "";
-		}
-
-
 	}
 
 
@@ -121,36 +62,50 @@ digraph {
 		label = <<B>Occupied cells</B>>;
 		fontcolor = "#2F4858";
 		fontsize = "20px";
-		node000 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 000 | data = 0 | next = 1 | prev = 9 " ];
-		node001 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 001 | data = 10 | next = 2 | prev = 0 " ];
-		node002 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 002 | data = 20 | next = 3 | prev = 1 " ];
-		node003 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 003 | data = 30 | next = 4 | prev = 2 " ];
-		node004 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 004 | data = 40 | next = 6 | prev = 3 " ];
-		node006 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 006 | data = 60 | next = 7 | prev = 4 " ];
-		node007 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 007 | data = 70 | next = 8 | prev = 6 " ];
-		node008 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 008 | data = 80 | next = 9 | prev = 7 " ];
-		node009 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 009 | data = 90 | next = 0 | prev = 8 " ];
 
-		node000 -> node000 [label = "0"; color = "#9400D3"; ];
-		node000 -> node001 [ color = "#DC143C"; ];
-		node001 -> node002 [ color = "#DC143C"; ];
-		node002 -> node003 [ color = "#DC143C"; ];
-		node003 -> node004 [ color = "#DC143C"; ];
-		node004 -> node006 [ color = "#DC143C"; ];
-		node006 -> node007 [ color = "#DC143C"; ];
-		node007 -> node008 [ color = "#DC143C"; ];
-		node008 -> node009 [ color = "#DC143C"; ];
-		node009 -> node000 [ color = "#DC143C"; ];
+		subgraph cluster_HeadAndTail {
+			peripheries = 0
+			label = "";
+			nodeHead [ shape = Mrecord; style = filled; fillcolor = "#222B22"; color = "#262B22"; fontcolor = "white"; label = "HEAD"; ];
+			nodeTail [ shape = Mrecord; style = filled; fillcolor = "#562439"; color = "#56243C"; fontcolor = "white"; label = "TAIL"; ];
+			nodeHead -> nodeTail [ color = "#FBC4AB"; ];
+		}
 
-		node000 -> node009 [ color = "#228B22"; ];
-		node001 -> node000 [ color = "#228B22"; ];
-		node002 -> node001 [ color = "#228B22"; ];
-		node003 -> node002 [ color = "#228B22"; ];
-		node004 -> node003 [ color = "#228B22"; ];
-		node006 -> node004 [ color = "#228B22"; ];
-		node007 -> node006 [ color = "#228B22"; ];
-		node008 -> node007 [ color = "#228B22"; ];
-		node009 -> node008 [ color = "#228B22"; ];
+		subgraph cluster_occupied {
+			peripheries = 0
+			label = "";
+			node000 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 000 | data = 0 | next = 1 | prev = 9 "; ];
+			node001 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 001 | data = 10 | next = 2 | prev = 0 "; ];
+			node002 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 002 | data = 20 | next = 3 | prev = 1 "; ];
+			node003 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 003 | data = 30 | next = 4 | prev = 2 "; ];
+			node004 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 004 | data = 40 | next = 6 | prev = 3 "; ];
+			node006 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 006 | data = 60 | next = 7 | prev = 4 "; ];
+			node007 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 007 | data = 70 | next = 8 | prev = 6 "; ];
+			node008 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 008 | data = 80 | next = 9 | prev = 7 "; ];
+			node009 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 009 | data = 90 | next = 0 | prev = 8 "; ];
+
+			node000 -> node001 [ color = "#DC143C"; ];
+			node000 -> node009 [ color = "#228B22"; ];
+			nodeHead -> node001 [ color = "violet"; ];
+			node001 -> node002 [ color = "#DC143C"; ];
+			node001 -> node000 [ color = "#228B22"; ];
+			node002 -> node003 [ color = "#DC143C"; ];
+			node002 -> node001 [ color = "#228B22"; ];
+			node003 -> node004 [ color = "#DC143C"; ];
+			node003 -> node002 [ color = "#228B22"; ];
+			node004 -> node006 [ color = "#DC143C"; ];
+			node004 -> node003 [ color = "#228B22"; ];
+			node006 -> node007 [ color = "#DC143C"; ];
+			node006 -> node004 [ color = "#228B22"; ];
+			node007 -> node008 [ color = "#DC143C"; ];
+			node007 -> node006 [ color = "#228B22"; ];
+			node008 -> node009 [ color = "#DC143C"; ];
+			node008 -> node007 [ color = "#228B22"; ];
+			nodeTail -> node009 [ color = "violet"; ];
+			node009 -> node000 [ color = "#DC143C"; ];
+			node009 -> node008 [ color = "#228B22"; ];
+		}
+
 	}
 
 }
