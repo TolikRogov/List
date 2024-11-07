@@ -9,7 +9,8 @@ int main() {
 
 	LIST_CTOR(&list);
 
-	for (int i = 10, j = 0; i < 100 && j < (int)list.capacity; i += 10, j++)
+	Indexes_t j = 0;
+	for (Data_t i = 10; i < 300 && j < (Indexes_t)list.capacity; i += 10, j++)
 		LIST_INSERT_AFTER(&list, i, j);
 
 	Data_t x = 0;
@@ -17,7 +18,19 @@ int main() {
 
 	LIST_INSERT_AFTER(&list, 333, 0);
 
+	INIT_LIST(list2);
+
+	LIST_CTOR(&list2);
+
+	j = 0;
+	for (Data_t i = 10; i < 100 && j < (Indexes_t)list.capacity; i += 10, j++)
+		LIST_INSERT_AFTER(&list2, (-1) * i, j);
+
+	LIST_INSERT_AFTER(&list, 999, 5);
+
+	LIST_DTOR(&list2);
 	LIST_DTOR(&list);
 
+	LIST_HTML_DUMP_FINISH();
 	return 0;
 }

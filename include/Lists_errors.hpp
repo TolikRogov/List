@@ -31,6 +31,8 @@ enum ListStatusCode {
 	LIST_FILE_CLOSE_ERROR,
 
 	LIST_DIR_CLOSE_ERROR,
+
+	LIST_CYCLE_ERROR,
 };
 
 const char* ListErrorsMessenger(ListStatusCode status);

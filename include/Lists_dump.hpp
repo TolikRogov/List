@@ -26,12 +26,8 @@ struct DumpLogInfo {
 	const char* func;
 };
 
-ListStatusCode ListPrint(List* list);
-
-ListStatusCode ListHtmlDumpStart();
 ListStatusCode ListCreateDumpDir();
 ListStatusCode ListCssFile();
-ListStatusCode ListHtmlDumpFinish();
 
 ListStatusCode ListGraphDump(List* list, DumpLogInfo dump_info);
 

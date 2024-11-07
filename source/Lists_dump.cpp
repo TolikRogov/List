@@ -186,7 +186,7 @@ ListStatusCode ListBashScript(List* list, DumpLogInfo dump_info) {
 
 #define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
 
-	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 && prev_info.line != list->info.line && StrCmp(prev_info.var_name, list->info.name) != 0)
+	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 || prev_info.line != list->info.line || StrCmp(prev_info.var_name, list->info.name) != 0)
 		HTML_PRINTF("\t\t\t\t\t\t<b>List[%p] born at \"%s\": %zu, name '%s'</b>\n", \
 					list, (prev_info.file_name = list->info.file_name), (prev_info.line = (size_t)list->info.line), (prev_info.var_name = list->info.name));
 
@@ -285,10 +285,10 @@ ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		if (list->elems[0].next == (int)i)
+		if (list->elems[0].next == (Indexes_t)i)
 			DOT_PRINTF("\t\t\tnodeHead -> node%.3d [ color = %s; ];\n", list->elems[0].next, captive_colors.hat_arrows);
 
-		if (list->elems[0].prev == (int)i)
+		if (list->elems[0].prev == (Indexes_t)i)
 			DOT_PRINTF("\t\t\tnodeTail -> node%.3d [ color = %s; ];\n", list->elems[0].prev, captive_colors.hat_arrows);
 
 		DOT_PRINTF("\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, captive_colors.next_arrows);
@@ -356,7 +356,7 @@ ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
 		if (list->elems[i].prev != -1)
 			continue;
 
-		if (cnt == 0 && (free = (int)i)) {
+		if (cnt == 0 && (free = (Indexes_t)i)) {
 			cnt++;
 			continue;
 		}
@@ -371,12 +371,11 @@ ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
 
 			DOT_PRINTF("\t\t\t\tnode%.3d -> node%.3zu [ weight = 1000; color = %s; ];\n", free, i, free_colors.bg);
 		}
-		free = (int)i;
+		free = (Indexes_t)i;
 	}
 	DOT_PRINTF("\t\t\t}\n\n");
 
-	FindFree(list);
-	if (list->free != -1)
+	if (list->free > 0)
 		DOT_PRINTF("\t\t\tnodeFree -> node%.3d [ weight = 1000; color = %s; ];\n\n", list->free, free_colors.free_arrow);
 
 	DOT_PRINTF("\t\t}\n");
@@ -417,8 +416,6 @@ ListStatusCode ListPrint(List* list) {
 		printf("%4d ", list->elems[i].next);
 	printf("\n");
 	printf("\n");
-
-	FindFree(list);
 
 	printf("free = %d\n", list->free);
 	printf("head = %d\n", ListGetHead(list));

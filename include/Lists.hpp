@@ -39,7 +39,6 @@ typedef int Indexes_t;
 	list_status = ListCtor(list);						\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
-	LIST_HTML_DUMP_START();								\
 }
 
 #define LIST_VERIFY(list, ...) {						 \
@@ -62,7 +61,6 @@ typedef int Indexes_t;
 }
 
 #define LIST_DTOR(list) {								 \
-	LIST_HTML_DUMP_FINISH();							\
 	list_status = ListDtor(list);						\
 	LIST_ERROR_CHECK(list_status);						\
 }
@@ -89,6 +87,12 @@ struct List {
 	ListLogInfo info;
 };
 
+enum DumpCheck {
+	FIRST_RUN 	= 1,
+	SECOND_RUN 	= 2,
+	ALREADY_ON	= 3,
+};
+
 const size_t LIST_DEFAULT_DATA_CAPACITY = 20;
 
 const size_t LIST_TRASH = 0xDED104;
@@ -100,12 +104,16 @@ const size_t REALLOC_INDEX = 2;
 const size_t GRAPH_DUMP_INDEX = 10;
 
 ListStatusCode ListCtor(List* list);
+ListStatusCode ListHtmlDumpStart();
+
+ListStatusCode ListPrint(List* list);
+
+ListStatusCode ListHtmlDumpFinish();
 ListStatusCode ListDtor(List* list);
 
 ListStatusCode ListVerify(List* list, Indexes_t pos);
 ListStatusCode ListRealloc(List* list);
 
-ListStatusCode FindFree(List* list);
 Indexes_t ListGetHead(List* list);
 Indexes_t ListGetTail(List* list);
 

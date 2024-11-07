@@ -17,6 +17,8 @@ const char* ListErrorsMessenger(ListStatusCode status) {
 
 		case LIST_DIR_CLOSE_ERROR:				return "LIST ERROR - DIRECTORY WAS NOT CLOSED";
 
+		case LIST_CYCLE_ERROR:					return "LIST ERROR - LIST PENETRATION GETS MORE ELEMENTS THAN IN REAL";
+
 		default: 								return "LIST ERROR - UNDEFINED ERROR";
 	}
 }

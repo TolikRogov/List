@@ -19,32 +19,30 @@ digraph {
 		subgraph cluster_free {
 			peripheries = 0
 			label = "";
-			node010 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 010 | data = -666 | next = -1 | prev = -1 " ];
-			node011 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 011 | data = -666 | next = -1 | prev = -1 " ];
-			node012 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 012 | data = -666 | next = -1 | prev = -1 " ];
-			node013 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 013 | data = -666 | next = -1 | prev = -1 " ];
-			node014 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 014 | data = -666 | next = -1 | prev = -1 " ];
-			node015 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 015 | data = -666 | next = -1 | prev = -1 " ];
-			node016 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 016 | data = -666 | next = -1 | prev = -1 " ];
-			node017 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 017 | data = -666 | next = -1 | prev = -1 " ];
-			node018 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 018 | data = -666 | next = -1 | prev = -1 " ];
-			node019 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 019 | data = -666 | next = -1 | prev = -1 " ];
+			node031 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 031 | data = -666 | next = 32 | prev = -1 " ];
+			node032 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 032 | data = -666 | next = 33 | prev = -1 " ];
+			node033 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 033 | data = -666 | next = 34 | prev = -1 " ];
+			node034 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 034 | data = -666 | next = 35 | prev = -1 " ];
+			node035 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 035 | data = -666 | next = 36 | prev = -1 " ];
+			node036 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 036 | data = -666 | next = 37 | prev = -1 " ];
+			node037 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 037 | data = -666 | next = 38 | prev = -1 " ];
+			node038 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 038 | data = -666 | next = 39 | prev = -1 " ];
+			node039 [ shape = Mrecord; style = filled; fillcolor = "#5F9A9D"; color = "#3B6874"; label = " 039 | data = -666 | next = 0 | prev = -1 " ];
 
 			subgraph cluster_free000 {
 				peripheries = 0
 				label = "";
-				node010 -> node011 [ weight = 1000; color = "#DCEAB2"; ];
-				node011 -> node012 [ weight = 1000; color = "#DCEAB2"; ];
-				node012 -> node013 [ weight = 1000; color = "#DCEAB2"; ];
-				node013 -> node014 [ weight = 1000; color = "#DCEAB2"; ];
-				node014 -> node015 [ weight = 1000; color = "#DCEAB2"; ];
-				node015 -> node016 [ weight = 1000; color = "#DCEAB2"; ];
-				node016 -> node017 [ weight = 1000; color = "#DCEAB2"; ];
-				node017 -> node018 [ weight = 1000; color = "#DCEAB2"; ];
-				node018 -> node019 [ weight = 1000; color = "#DCEAB2"; ];
+				node031 -> node032 [ weight = 1000; color = "#DCEAB2"; ];
+				node032 -> node033 [ weight = 1000; color = "#DCEAB2"; ];
+				node033 -> node034 [ weight = 1000; color = "#DCEAB2"; ];
+				node034 -> node035 [ weight = 1000; color = "#DCEAB2"; ];
+				node035 -> node036 [ weight = 1000; color = "#DCEAB2"; ];
+				node036 -> node037 [ weight = 1000; color = "#DCEAB2"; ];
+				node037 -> node038 [ weight = 1000; color = "#DCEAB2"; ];
+				node038 -> node039 [ weight = 1000; color = "#DCEAB2"; ];
 			}
 
-			nodeFree -> node010 [ weight = 1000; color = "#34AB34"; ];
+			nodeFree -> node031 [ weight = 1000; color = "#34AB34"; ];
 
 		}
 	}
@@ -68,21 +66,42 @@ digraph {
 		subgraph cluster_occupied {
 			peripheries = 0
 			label = "";
-			node000 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 000 | data = 0 | next = 5 | prev = 9 "; ];
-			node001 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 001 | data = 10 | next = 2 | prev = 5 "; ];
+			node000 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 000 | data = 0 | next = 5 | prev = 29 "; ];
+			node001 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 001 | data = 10 | next = 2 | prev = 30 "; ];
 			node002 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 002 | data = 20 | next = 3 | prev = 1 "; ];
 			node003 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 003 | data = 30 | next = 4 | prev = 2 "; ];
 			node004 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 004 | data = 40 | next = 6 | prev = 3 "; ];
-			node005 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 005 | data = 333 | next = 1 | prev = 0 "; ];
+			node005 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 005 | data = 333 | next = 30 | prev = 0 "; ];
 			node006 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 006 | data = 60 | next = 7 | prev = 4 "; ];
 			node007 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 007 | data = 70 | next = 8 | prev = 6 "; ];
 			node008 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 008 | data = 80 | next = 9 | prev = 7 "; ];
-			node009 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 009 | data = 90 | next = 0 | prev = 8 "; ];
+			node009 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 009 | data = 90 | next = 10 | prev = 8 "; ];
+			node010 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 010 | data = 100 | next = 11 | prev = 9 "; ];
+			node011 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 011 | data = 110 | next = 12 | prev = 10 "; ];
+			node012 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 012 | data = 120 | next = 13 | prev = 11 "; ];
+			node013 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 013 | data = 130 | next = 14 | prev = 12 "; ];
+			node014 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 014 | data = 140 | next = 15 | prev = 13 "; ];
+			node015 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 015 | data = 150 | next = 16 | prev = 14 "; ];
+			node016 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 016 | data = 160 | next = 17 | prev = 15 "; ];
+			node017 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 017 | data = 170 | next = 18 | prev = 16 "; ];
+			node018 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 018 | data = 180 | next = 19 | prev = 17 "; ];
+			node019 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 019 | data = 190 | next = 20 | prev = 18 "; ];
+			node020 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 020 | data = 200 | next = 21 | prev = 19 "; ];
+			node021 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 021 | data = 210 | next = 22 | prev = 20 "; ];
+			node022 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 022 | data = 220 | next = 23 | prev = 21 "; ];
+			node023 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 023 | data = 230 | next = 24 | prev = 22 "; ];
+			node024 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 024 | data = 240 | next = 25 | prev = 23 "; ];
+			node025 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 025 | data = 250 | next = 26 | prev = 24 "; ];
+			node026 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 026 | data = 260 | next = 27 | prev = 25 "; ];
+			node027 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 027 | data = 270 | next = 28 | prev = 26 "; ];
+			node028 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 028 | data = 280 | next = 29 | prev = 27 "; ];
+			node029 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 029 | data = 290 | next = 0 | prev = 28 "; ];
+			node030 [ shape = Mrecord; style = filled; fillcolor = "#F4978E"; color = "#B55757"; label = " 030 | data = 999 | next = 1 | prev = 5 "; ];
 
 			node000 -> node005 [ color = "#DC143C"; ];
-			node000 -> node009 [ color = "#228B22"; ];
+			node000 -> node029 [ color = "#228B22"; ];
 			node001 -> node002 [ color = "#DC143C"; ];
-			node001 -> node005 [ color = "#228B22"; ];
+			node001 -> node030 [ color = "#228B22"; ];
 			node002 -> node003 [ color = "#DC143C"; ];
 			node002 -> node001 [ color = "#228B22"; ];
 			node003 -> node004 [ color = "#DC143C"; ];
@@ -90,7 +109,7 @@ digraph {
 			node004 -> node006 [ color = "#DC143C"; ];
 			node004 -> node003 [ color = "#228B22"; ];
 			nodeHead -> node005 [ color = "violet"; ];
-			node005 -> node001 [ color = "#DC143C"; ];
+			node005 -> node030 [ color = "#DC143C"; ];
 			node005 -> node000 [ color = "#228B22"; ];
 			node006 -> node007 [ color = "#DC143C"; ];
 			node006 -> node004 [ color = "#228B22"; ];
@@ -98,9 +117,51 @@ digraph {
 			node007 -> node006 [ color = "#228B22"; ];
 			node008 -> node009 [ color = "#DC143C"; ];
 			node008 -> node007 [ color = "#228B22"; ];
-			nodeTail -> node009 [ color = "violet"; ];
-			node009 -> node000 [ color = "#DC143C"; ];
+			node009 -> node010 [ color = "#DC143C"; ];
 			node009 -> node008 [ color = "#228B22"; ];
+			node010 -> node011 [ color = "#DC143C"; ];
+			node010 -> node009 [ color = "#228B22"; ];
+			node011 -> node012 [ color = "#DC143C"; ];
+			node011 -> node010 [ color = "#228B22"; ];
+			node012 -> node013 [ color = "#DC143C"; ];
+			node012 -> node011 [ color = "#228B22"; ];
+			node013 -> node014 [ color = "#DC143C"; ];
+			node013 -> node012 [ color = "#228B22"; ];
+			node014 -> node015 [ color = "#DC143C"; ];
+			node014 -> node013 [ color = "#228B22"; ];
+			node015 -> node016 [ color = "#DC143C"; ];
+			node015 -> node014 [ color = "#228B22"; ];
+			node016 -> node017 [ color = "#DC143C"; ];
+			node016 -> node015 [ color = "#228B22"; ];
+			node017 -> node018 [ color = "#DC143C"; ];
+			node017 -> node016 [ color = "#228B22"; ];
+			node018 -> node019 [ color = "#DC143C"; ];
+			node018 -> node017 [ color = "#228B22"; ];
+			node019 -> node020 [ color = "#DC143C"; ];
+			node019 -> node018 [ color = "#228B22"; ];
+			node020 -> node021 [ color = "#DC143C"; ];
+			node020 -> node019 [ color = "#228B22"; ];
+			node021 -> node022 [ color = "#DC143C"; ];
+			node021 -> node020 [ color = "#228B22"; ];
+			node022 -> node023 [ color = "#DC143C"; ];
+			node022 -> node021 [ color = "#228B22"; ];
+			node023 -> node024 [ color = "#DC143C"; ];
+			node023 -> node022 [ color = "#228B22"; ];
+			node024 -> node025 [ color = "#DC143C"; ];
+			node024 -> node023 [ color = "#228B22"; ];
+			node025 -> node026 [ color = "#DC143C"; ];
+			node025 -> node024 [ color = "#228B22"; ];
+			node026 -> node027 [ color = "#DC143C"; ];
+			node026 -> node025 [ color = "#228B22"; ];
+			node027 -> node028 [ color = "#DC143C"; ];
+			node027 -> node026 [ color = "#228B22"; ];
+			node028 -> node029 [ color = "#DC143C"; ];
+			node028 -> node027 [ color = "#228B22"; ];
+			nodeTail -> node029 [ color = "violet"; ];
+			node029 -> node000 [ color = "#DC143C"; ];
+			node029 -> node028 [ color = "#228B22"; ];
+			node030 -> node001 [ color = "#DC143C"; ];
+			node030 -> node005 [ color = "#228B22"; ];
 		}
 
 	}
