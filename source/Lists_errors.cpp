@@ -12,6 +12,24 @@ const char* ListErrorsMessenger(ListStatusCode status) {
 		case LIST_WRONG_FREE_ELEMENT:			return "LIST ERROR - FOUNDED FREE ELEMENT IS NOT FREE";
 		case LIST_WRONG_ELEMENT_POSITION:		return "LIST ERROR - DECLARED POSITION OF ELEMENT IS NO VALID";
 
+		case LIST_FILE_OPEN_ERROR:				return "LIST ERROR - FILE WAS NOT OPENED";
+		case LIST_FILE_CLOSE_ERROR:				return "LIST ERROR - FILE WAS NOT CLOSED";
+
+		case LIST_DIR_CLOSE_ERROR:				return "LIST ERROR - DIRECTORY WAS NOT CLOSED";
+
 		default: 								return "LIST ERROR - UNDEFINED ERROR";
 	}
+}
+
+int StrCmp(const char* str1, const char* str2) {
+
+	if (!str1 || !str2)
+		return -1;
+
+	size_t i = 0;
+	for (; *(str1 + i) != '\0' && *(str2 + i) != '\0'; i++) {
+		if (*(str1 + i) != *(str2 + i))
+			break;
+	}
+	return (*(str1 + i) - *(str2 + i));
 }

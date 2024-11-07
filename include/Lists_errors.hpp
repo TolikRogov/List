@@ -1,6 +1,8 @@
 #ifndef LISTS_ERRORS_INCLUDE
 #define LISTS_ERRORS_INCLUDE
 
+#include <stdio.h>
+
 #define RED(str) 		"\033[31;1m" str "\033[0m"
 #define YELLOW(str) 	"\033[33;4m" str "\033[0m"
 #define GREEN(str) 		"\033[32;6m" str "\033[0m"
@@ -26,9 +28,12 @@ enum ListStatusCode {
 	LIST_WRONG_ELEMENT_POSITION,
 
 	LIST_FILE_OPEN_ERROR,
-	LIST_FILE_CLOSE_ERROR
+	LIST_FILE_CLOSE_ERROR,
+
+	LIST_DIR_CLOSE_ERROR,
 };
 
 const char* ListErrorsMessenger(ListStatusCode status);
+int StrCmp(const char* str1, const char* str2);
 
 #endif //LISTS_ERRORS_INCLUDE

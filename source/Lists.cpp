@@ -37,15 +37,13 @@ ListStatusCode ListVerify(List* list, Indexes_t pos) {
 	if (list->elems[list->free].prev != -1)
 		return LIST_WRONG_FREE_ELEMENT;
 
-	if (pos < 0 || pos > list->capacity || pos > list->free + 1)
+	if (pos < 0 || pos > (int)list->capacity || pos > list->free + 1)
 		return LIST_WRONG_ELEMENT_POSITION;
 
 	return LIST_NO_ERROR;
 }
 
 ListStatusCode ListRealloc(List* list) {
-
-	ListStatusCode list_status = LIST_NO_ERROR;
 
 	if (list->size < list->capacity)
 		return LIST_NO_ERROR;
@@ -66,7 +64,7 @@ ListStatusCode FindFree(List* list) {
 
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev == -1) {
-			list->free = i;
+			list->free = (int)i;
 			return LIST_NO_ERROR;
 		}
 	}
@@ -83,7 +81,7 @@ Indexes_t ListGetHead(List* list) {
 Indexes_t ListGetTail(List* list) {
 	return list->elems[0].prev;
 }
-
+//TODO: ListInsertBefore
 ListStatusCode ListInsertAfter(List* list, Data_t element, Indexes_t pos) {
 
 	ListStatusCode list_status = LIST_NO_ERROR;

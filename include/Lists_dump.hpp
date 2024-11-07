@@ -3,9 +3,15 @@
 
 #include "Lists.hpp"
 
-#define DOT_FILE_ 	"../dump/graph.dot"
-#define IMG_PNG_  	"../dump/graph.png"
-#define HTML_FILE_ 	"../dump/main.html"
+#define DUMP_DIR_ 		"dump/"
+#define IMG_DIR_		"img/"
+
+#define DOT_FILE_ 		DUMP_DIR_ "graph.dot"
+#define IMG_FILE_  		IMG_DIR_ "graph"
+#define HTML_FILE_ 		DUMP_DIR_ "main.html"
+#define BASH_FILE_		DUMP_DIR_ "script.bash"
+
+#define IMG_EXTENSION 	".png"
 
 #ifdef __APPLE__
 	#define OPEN	"open "
@@ -14,10 +20,13 @@
 #endif
 
 ListStatusCode ListPrint(List* list);
-ListStatusCode ListHtmlDump(List* list);
+ListStatusCode ListHtmlDumpStart();
+ListStatusCode ListHtmlDumpFinish();
 ListStatusCode ListGraphDump(List* list);
 
 ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file);
 ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file);
+
+ListStatusCode ListBashScript(List* list);
 
 #endif //LISTS_DUMP_INCLUDE

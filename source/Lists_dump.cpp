@@ -1,40 +1,66 @@
 #include "Lists_dump.hpp"
 
-ListStatusCode ListHtmlDump(List* list) {
+ListStatusCode ListHtmlDumpStart() {
 
-	ListStatusCode list_status = LIST_NO_ERROR;
+	DIR* dump_dir = opendir(DUMP_DIR_);
+	if (dump_dir) {
+		if (closedir(dump_dir))
+			LIST_ERROR_CHECK(LIST_DIR_CLOSE_ERROR);
+		system("rm -rf " DUMP_DIR_);
+	}
+	system("mkdir " DUMP_DIR_);
+
+	DIR* img_dir = opendir(DUMP_DIR_ IMG_DIR_);
+	if (!img_dir)
+		system("mkdir " DUMP_DIR_ IMG_DIR_);
+	else {
+		if (closedir(img_dir))
+			LIST_ERROR_CHECK(LIST_DIR_CLOSE_ERROR);
+	}
 
 	FILE* html_file = fopen(HTML_FILE_, "w");
 	if (!html_file)
 		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
 
-	LIST_GRAPH_DUMP(list);
+#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
 
-	fprintf(html_file, "<!DOCTYPE HTML PUBLIC>\n");
-	fprintf(html_file, "<html>\n");
+	HTML_PRINTF("<!DOCTYPE HTML PUBLIC>\n");
+	HTML_PRINTF("<html>\n");
 
-	fprintf(html_file, "\t<head>\n");
-	fprintf(html_file, "\t\t<title>Stack Dump</title>\n");
-	fprintf(html_file, "\t</head>\n");
+	HTML_PRINTF("\t<head>\n");
+	HTML_PRINTF("\t\t<title>List Dump</title>\n");
+	HTML_PRINTF("\t</head>\n");
 
-	fprintf(html_file, "\t<body style='background-color: #F1F1F1'>\n");
+	HTML_PRINTF("\t<body style='background-color: #F1F1F1'>\n");
 
-	fprintf(html_file, "\t\t<pre>\n");
-	fprintf(html_file, "\t\t<tt>\n");
+	HTML_PRINTF("\t\t<pre>\n");
+	HTML_PRINTF("\t\t<tt>\n");
 
-	fprintf(html_file, "\t\t<h1 align='center'>MEGA DUMP</h1>\n");
-	fprintf(html_file, "\t\t<h2 style='text-decoration: underline'><p style='text-align: center'>"
-					"List[<span style='color: #4B0082;'>%p</span>] "
-					"born at <span style='color: #FFA500;'>%s</span>: <span style='color: #20B2AA;'>%zu</span>, "
-					"name '<span style='color: #7B68EE;'>%s</span>'</p></h2>\n",
-					list, list->info.file_name, list->info.line, list->info.name);
-	fprintf(html_file, "\t\t<img src='%s' style='width: 80%%'>\n", IMG_PNG_);
+	HTML_PRINTF("\t\t<h1 align='center'>MEGA DUMP</h1>\n");
 
-	fprintf(html_file, "\t\t</tt>\n");
-	fprintf(html_file, "\t\t</pre>\n");
+#undef HTML_PRINTF
 
-	fprintf(html_file, "\t</body>\n");
-	fprintf(html_file, "</html>\n");
+	if (fclose(html_file))
+		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
+
+	return LIST_NO_ERROR;
+}
+
+ListStatusCode ListHtmlDumpFinish() {
+
+	FILE* html_file = fopen(HTML_FILE_, "a");
+	if (!html_file)
+		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
+
+#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
+
+	HTML_PRINTF("\t\t</tt>\n");
+	HTML_PRINTF("\t\t</pre>\n");
+
+	HTML_PRINTF("\t</body>\n");
+	HTML_PRINTF("</html>\n");
+
+#undef HTML_PRINTF
 
 	if (fclose(html_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
@@ -44,7 +70,56 @@ ListStatusCode ListHtmlDump(List* list) {
 	return LIST_NO_ERROR;
 }
 
+ListStatusCode ListBashScript(List* list) {
+
+	static size_t script_num = 1;
+	static ListLogInfo prev_info = {};
+
+	FILE* bash_script = fopen(BASH_FILE_, "w");
+	if (!bash_script)
+		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
+
+#define BASH_PRINTF(...) fprintf(bash_script, __VA_ARGS__);
+
+	BASH_PRINTF("#!/bin/bash\n");
+
+	BASH_PRINTF("script_num=%zu;\\\n", script_num);
+	BASH_PRINTF("dot " DOT_FILE_ " -Tpng -o " DUMP_DIR_ IMG_FILE_ "$script_num" IMG_EXTENSION ";\n");
+
+#undef BASH_PRINTF
+
+	if (fclose(bash_script))
+		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
+
+	system("chmod +x " BASH_FILE_ "; ./" BASH_FILE_);
+
+	FILE* html_file = fopen(HTML_FILE_, "a");
+	if (!html_file)
+		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
+
+#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
+
+	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 && prev_info.line != list->info.line && StrCmp(prev_info.name, list->info.name) != 0) {
+		HTML_PRINTF("\t\t<h2 style='text-decoration: underline'><p style='text-align: center'>");
+		HTML_PRINTF("List[<span style='color: #4B0082;'>%p</span>] ", list);
+		HTML_PRINTF("born at <span style='color: #FFA500;'>%s</span>: ", (prev_info.file_name = list->info.file_name));
+		HTML_PRINTF("<span style='color: #20B2AA;'>%zu</span>, ", (prev_info.line = list->info.line));
+		HTML_PRINTF("name '<span style='color: #7B68EE;'>%s</span>'</p></h2>\n", (prev_info.name = list->info.name));
+	}
+
+	HTML_PRINTF("\t\t<img src='%s%zu%s' style='width: 80%%'>\n", IMG_FILE_, script_num++, IMG_EXTENSION);
+
+#undef HTML_PRINTF
+
+	if (fclose(html_file))
+		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
+
+	return LIST_NO_ERROR;
+}
+
 ListStatusCode ListGraphDump(List* list) {
+
+	ListStatusCode list_status = LIST_NO_ERROR;
 
 	FILE* dot_file = fopen(DOT_FILE_, "w");
 	if (!dot_file)
@@ -64,159 +139,171 @@ ListStatusCode ListGraphDump(List* list) {
 	if (fclose(dot_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
-	system("dot " DOT_FILE_ " -Tpng -o " IMG_PNG_);
+	list_status = ListBashScript(list);
+	LIST_ERROR_CHECK(list_status);
 
 	return LIST_NO_ERROR;
 }
 
 ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
 
-	const char* BG_COLOR = "\"#FBC4AB\"";
-	const char* EDGE_COLOR = "\"#F4978E\"";
-	const char* EDGE_BORDER_COLOR = "\"#B55757\"";
-	const char* CLUSTER_BORDER_COLOR = "\"#966156\"";
-	const char* PREV_ARROWS_COLOR = "\"#228B22\"";
-	const char* NEXT_ARROWS_COLOR = "\"#DC143C\"";
-	const char* HEAD_COLOR = "\"#222B22\"";
-	const char* HEAD_BORDER_COLOR = "\"#262B22\"";
-	const char* TAIL_COLOR = "\"#562439\"";
-	const char* TAIL_BORDER_COLOR = "\"#56243C\"";
-	const char* HEAD_AND_TAIL_ARROWs = "\"violet\"";
+	struct Colors {
+		const char* bg 				= "\"#FBC4AB\"";
+		const char* edge 			= "\"#F4978E\"";
+		const char* edge_border 	= "\"#B55757\"";
+		const char* cluster_border 	= "\"#966156\"";
+		const char* prev_arrows		= "\"#228B22\"";
+		const char* next_arrows 	= "\"#DC143C\"";
+		const char* head 			= "\"#088F41\"";
+		const char* head_border 	= "\"#014920\"";
+		const char* tail 			= "\"#9B5170\"";
+		const char* tail_border 	= "\"#56243C\"";
+		const char* hat_arrows 		= "\"violet\"";
+	} captive_colors;
 
-	fprintf(dot_file, "\n");
+#define DOT_PRINTF(...) fprintf(dot_file, __VA_ARGS__);
 
-	fprintf(dot_file, "\tsubgraph cluster_captive {\n");
-	fprintf(dot_file, "\t\tbgcolor = %s;\n", BG_COLOR);
-	fprintf(dot_file, "\t\tcolor = %s;\n", CLUSTER_BORDER_COLOR);
-	fprintf(dot_file, "\t\tlabel = <<B>Occupied cells</B>>;\n");
-	fprintf(dot_file, "\t\tfontcolor = \"#2F4858\";\n");
-	fprintf(dot_file, "\t\tfontsize = \"20px\";\n\n");
+	DOT_PRINTF("\n");
 
-	fprintf(dot_file, "\t\tsubgraph cluster_HeadAndTail {\n");
-	fprintf(dot_file, "\t\t\tperipheries = 0\n");
-	fprintf(dot_file, "\t\t\tlabel = \"\";\n");
-	fprintf(dot_file, "\t\t\tnodeHead [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"HEAD\"; ];\n", HEAD_COLOR, HEAD_BORDER_COLOR);
-	fprintf(dot_file, "\t\t\tnodeTail [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"TAIL\"; ];\n", TAIL_COLOR, TAIL_BORDER_COLOR);
-	fprintf(dot_file, "\t\t\tnodeHead -> nodeTail [ color = %s; ];\n", BG_COLOR);
-	fprintf(dot_file, "\t\t}\n\n");
+	DOT_PRINTF("\tsubgraph cluster_captive {\n");
+	DOT_PRINTF("\t\tbgcolor = %s;\n", captive_colors.bg);
+	DOT_PRINTF("\t\tcolor = %s;\n", captive_colors.cluster_border);
+	DOT_PRINTF("\t\tlabel = <<B>Occupied cells</B>>;\n");
+	DOT_PRINTF("\t\tfontcolor = \"#2F4858\";\n");
+	DOT_PRINTF("\t\tfontsize = \"20px\";\n\n");
 
-	fprintf(dot_file, "\t\tsubgraph cluster_occupied {\n");
-	fprintf(dot_file, "\t\t\tperipheries = 0\n");
-	fprintf(dot_file, "\t\t\tlabel = \"\";\n");
+	DOT_PRINTF("\t\tsubgraph cluster_HeadAndTail {\n");
+	DOT_PRINTF("\t\t\tperipheries = 0\n");
+	DOT_PRINTF("\t\t\tlabel = \"\";\n");
+	DOT_PRINTF("\t\t\tnodeHead [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"HEAD\"; ];\n",
+				captive_colors.head, captive_colors.head_border);
+	DOT_PRINTF("\t\t\tnodeTail [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"TAIL\"; ];\n",
+				captive_colors.tail, captive_colors.tail_border);
+	DOT_PRINTF("\t\t\tnodeHead -> nodeTail [ color = %s; ];\n", captive_colors.bg);
+	DOT_PRINTF("\t\t}\n\n");
+
+	DOT_PRINTF("\t\tsubgraph cluster_occupied {\n");
+	DOT_PRINTF("\t\t\tperipheries = 0\n");
+	DOT_PRINTF("\t\t\tlabel = \"\";\n");
 
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		fprintf(dot_file, "\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \"; ];\n",
-						 i, EDGE_COLOR, EDGE_BORDER_COLOR, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		DOT_PRINTF("\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \"; ];\n",
+						 i, captive_colors.edge, captive_colors.edge_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
 	}
 
-	fprintf(dot_file, "\n");
+	DOT_PRINTF("\n");
 
-	for (size_t i = 0, cnt = 0; i < list->capacity; i++) {
+	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev == -1)
 			continue;
 
-		if (list->elems[0].next == i)
-			fprintf(dot_file, "\t\t\tnodeHead -> node%.3d [ color = %s; ];\n", list->elems[0].next, HEAD_AND_TAIL_ARROWs);
+		if (list->elems[0].next == (int)i)
+			DOT_PRINTF("\t\t\tnodeHead -> node%.3d [ color = %s; ];\n", list->elems[0].next, captive_colors.hat_arrows);
 
-		if (list->elems[0].prev == i)
-			fprintf(dot_file, "\t\t\tnodeTail -> node%.3d [ color = %s; ];\n", list->elems[0].prev, HEAD_AND_TAIL_ARROWs);
+		if (list->elems[0].prev == (int)i)
+			DOT_PRINTF("\t\t\tnodeTail -> node%.3d [ color = %s; ];\n", list->elems[0].prev, captive_colors.hat_arrows);
 
-		fprintf(dot_file, "\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, NEXT_ARROWS_COLOR);
-		fprintf(dot_file, "\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].prev, PREV_ARROWS_COLOR);
+		DOT_PRINTF("\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, captive_colors.next_arrows);
+		DOT_PRINTF("\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].prev, captive_colors.prev_arrows);
 	}
-	fprintf(dot_file, "\t\t}\n\n");
+	DOT_PRINTF("\t\t}\n\n");
 
-	fprintf(dot_file, "\t}\n");
+	DOT_PRINTF("\t}\n");
 
-	fprintf(dot_file, "\n");
+	DOT_PRINTF("\n");
+
+#undef DOT_PRINTF
 
 	return LIST_NO_ERROR;
 }
 
 ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
 
-	const char* BG_COLOR = "\"#DCEAB2\"";
-	const char* EDGE_COLOR = "\"#5F9A9D\"";
-	const char* EDGE_BORDER_COLOR = "\"#3B6874\"";
-	const char* CLUSTER_BORDER_COLOR = "\"#b1c274\"";
-	const char* FREE_COLOR = "\"#D1D1D5\"";
-	const char* FREE_BORDER_COLOR = "\"#C1C1C5\"";
-	const char* FREE_ARROW_COLOR = "\"#34AB34\"";
+	struct Colors {
+		const char* bg 				= "\"#DCEAB2\"";
+		const char* edge 			= "\"#5F9A9D\"";
+		const char* edge_border 	= "\"#3B6874\"";
+		const char* cluster_border	= "\"#b1c274\"";
+		const char* free 			= "\"#D1D1D5\"";
+		const char* free_border 	= "\"#C1C1C5\"";
+		const char* free_arrow 		= "\"#34AB34\"";
+	} free_colors;
 
-	fprintf(dot_file, "\n");
+#define DOT_PRINTF(...) fprintf(dot_file, __VA_ARGS__);
 
-	fprintf(dot_file, "\tsubgraph cluster_free {\n");
-	fprintf(dot_file, "\t\tbgcolor = %s;\n", BG_COLOR);
-	fprintf(dot_file, "\t\tcolor = %s;\n", CLUSTER_BORDER_COLOR);
-	fprintf(dot_file, "\t\tlabel = <<B>Free cells</B>>;\n");
-	fprintf(dot_file, "\t\tfontcolor = \"#2F4858\";\n");
-	fprintf(dot_file, "\t\tfontsize = \"20px\";\n\n");
+	DOT_PRINTF("\n");
 
-	fprintf(dot_file, "\t\tsubgraph cluster_Free {\n");
-	fprintf(dot_file, "\t\t\tperipheries = 0\n");
-	fprintf(dot_file, "\t\t\tlabel = \"\";\n");
-	fprintf(dot_file, "\t\t\tnodeFree [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"black\"; label = \"FREE\"; ];\n", FREE_COLOR, FREE_BORDER_COLOR);
-	fprintf(dot_file, "\t\t}\n\n");
+	DOT_PRINTF("\tsubgraph cluster_free {\n");
+	DOT_PRINTF("\t\tbgcolor = %s;\n", free_colors.bg);
+	DOT_PRINTF("\t\tcolor = %s;\n", free_colors.cluster_border);
+	DOT_PRINTF("\t\tlabel = <<B>Free cells</B>>;\n");
+	DOT_PRINTF("\t\tfontcolor = \"#2F4858\";\n");
+	DOT_PRINTF("\t\tfontsize = \"20px\";\n\n");
 
-	fprintf(dot_file, "\t\tsubgraph cluster_free {\n");
-	fprintf(dot_file, "\t\t\tperipheries = 0\n");
-	fprintf(dot_file, "\t\t\tlabel = \"\";\n");
+	DOT_PRINTF("\t\tsubgraph cluster_Free {\n");
+	DOT_PRINTF("\t\t\tperipheries = 0\n");
+	DOT_PRINTF("\t\t\tlabel = \"\";\n");
+	DOT_PRINTF("\t\t\tnodeFree [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"black\"; label = \"FREE\"; ];\n",
+				free_colors.free, free_colors.free_border);
+	DOT_PRINTF("\t\t}\n\n");
+
+	DOT_PRINTF("\t\tsubgraph cluster_free {\n");
+	DOT_PRINTF("\t\t\tperipheries = 0\n");
+	DOT_PRINTF("\t\t\tlabel = \"\";\n");
 	for (size_t i = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev != -1)
 			continue;
 
-		fprintf(dot_file, "\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
-						 i, EDGE_COLOR, EDGE_BORDER_COLOR, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		DOT_PRINTF("\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
+					i, free_colors.edge, free_colors.edge_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
 	}
 
 	fprintf(dot_file, "\n");
 
 	Indexes_t free = 0;
-	fprintf(dot_file, "\t\t\tsubgraph cluster_free%.3d {\n", 0);
-	fprintf(dot_file, "\t\t\t\tperipheries = 0\n");
-	fprintf(dot_file, "\t\t\t\tlabel = \"\";\n");
+	DOT_PRINTF("\t\t\tsubgraph cluster_free%.3d {\n", 0);
+	DOT_PRINTF("\t\t\t\tperipheries = 0\n");
+	DOT_PRINTF("\t\t\t\tlabel = \"\";\n");
 	for (size_t i = 0, cnt = 0; i < list->capacity; i++) {
 		if (list->elems[i].prev != -1)
 			continue;
 
-		if (cnt == 0 && (free = i)) {
+		if (cnt == 0 && (free = (int)i)) {
 			cnt++;
 			continue;
 		}
 
 		if (cnt++ % GRAPH_DUMP_INDEX == 0) {
-			fprintf(dot_file, "\t\t\t}\n\n");
-			fprintf(dot_file, "\t\t\tsubgraph cluster_free%.3zu {\n", cnt / GRAPH_DUMP_INDEX);
-			fprintf(dot_file, "\t\t\t\tperipheries = 0\n");
-			fprintf(dot_file, "\t\t\t\tlabel = \"\";\n");
+			DOT_PRINTF("\t\t\t}\n\n");
+			DOT_PRINTF("\t\t\tsubgraph cluster_free%.3zu {\n", cnt / GRAPH_DUMP_INDEX);
+			DOT_PRINTF("\t\t\t\tperipheries = 0\n");
+			DOT_PRINTF("\t\t\t\tlabel = \"\";\n");
 		}
 		else {
 
-			fprintf(dot_file, "\t\t\t\tnode%.3d -> node%.3zu [ weight = 1000; color = %s; ];\n", free, i, BG_COLOR);
+			DOT_PRINTF("\t\t\t\tnode%.3d -> node%.3zu [ weight = 1000; color = %s; ];\n", free, i, free_colors.bg);
 		}
-		free = i;
+		free = (int)i;
 	}
-	fprintf(dot_file, "\t\t\t}\n\n");
+	DOT_PRINTF("\t\t\t}\n\n");
 
-	fprintf(dot_file, "\t\t\tnodeFree -> node%.3d [ weight = 1000; color = %s; ];\n", list->free, FREE_ARROW_COLOR);
+	FindFree(list);
+	if (list->free != -1)
+		DOT_PRINTF("\t\t\tnodeFree -> node%.3d [ weight = 1000; color = %s; ];\n\n", list->free, free_colors.free_arrow);
 
-	fprintf(dot_file, "\n");
+	DOT_PRINTF("\t\t}\n");
 
-	fprintf(dot_file, "\t\t}\n");
+	DOT_PRINTF("\t}\n\n");
 
-	fprintf(dot_file, "\t}\n");
-
-	fprintf(dot_file, "\n");
+#undef DOT_PRINTF
 
 	return LIST_NO_ERROR;
 }
 
 ListStatusCode ListPrint(List* list) {
-
-	ListStatusCode list_status = LIST_NO_ERROR;
 
 	for (size_t i = 0; i < 150; i++)
 		printf("-");
@@ -246,7 +333,7 @@ ListStatusCode ListPrint(List* list) {
 	printf("\n");
 	printf("\n");
 
-	list_status = FindFree(list);
+	FindFree(list);
 
 	printf("free = %d\n", list->free);
 	printf("head = %d\n", ListGetHead(list));

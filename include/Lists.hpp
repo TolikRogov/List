@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <dirent.h>
 #include "Lists_errors.hpp"
 
 typedef int Data_t;
@@ -19,10 +20,26 @@ typedef int Indexes_t;
 	#define LST_CON_DUMP_(list)
 #endif
 
-#define LIST_CTOR(list, ...) {							\
-	list_status = ListCtor(list __VA_ARGS__);			\
+#define LIST_HTML_DUMP_START() {					 	 \
+	list_status = ListHtmlDumpStart();					\
+	LIST_ERROR_CHECK(list_status);						\
+}
+
+#define LIST_HTML_DUMP_FINISH() {					 	 \
+	list_status = ListHtmlDumpFinish();					\
+	LIST_ERROR_CHECK(list_status);						\
+}
+
+#define LIST_GRAPH_DUMP(list) {							 \
+	list_status = ListGraphDump(list);					\
+	LIST_ERROR_CHECK(list_status);						\
+}
+
+#define LIST_CTOR(list) {								 \
+	list_status = ListCtor(list);						\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
+	LIST_HTML_DUMP_START();								\
 }
 
 #define LIST_VERIFY(list, ...) {						\
@@ -34,33 +51,26 @@ typedef int Indexes_t;
 	list_status = ListInsertAfter(list, __VA_ARGS__); 	\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
+	LIST_GRAPH_DUMP(list);								\
 }
 
 #define LIST_OUTSERT(list, ...) {						\
 	list_status = ListOutsert(list, __VA_ARGS__); 		\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
+	LIST_GRAPH_DUMP(list);								\
 }
 
-#define LIST_DTOR(list, ...) {							\
-	list_status = ListDtor(list __VA_ARGS__);			\
-	LIST_ERROR_CHECK(list_status);						\
-}
-
-#define LIST_GRAPH_DUMP(list, ...) {					\
-	list_status = ListGraphDump(list __VA_ARGS__);		\
-	LIST_ERROR_CHECK(list_status);						\
-}
-
-#define LIST_HTML_DUMP(list, ...) {						\
-	list_status = ListHtmlDump(list __VA_ARGS__);		\
+#define LIST_DTOR(list) {								 \
+	LIST_HTML_DUMP_FINISH();							\
+	list_status = ListDtor(list);						\
 	LIST_ERROR_CHECK(list_status);						\
 }
 
 struct ListLogInfo {
-	const char* name;
-	const char* file_name;
-	const size_t line;
+	char* name;
+	char* file_name;
+	size_t line;
 };
 
 struct Data_elem {
