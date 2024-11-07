@@ -2,6 +2,115 @@
 
 ListStatusCode ListHtmlDumpStart() {
 
+	ListStatusCode list_status = LIST_NO_ERROR;
+
+	list_status = ListCreateDumpDir();
+	LIST_ERROR_CHECK(list_status);
+
+	FILE* html_file = fopen(HTML_FILE_, "w");
+	if (!html_file)
+		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
+
+	list_status = ListCssFile();
+	LIST_ERROR_CHECK(list_status);
+
+#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
+
+	HTML_PRINTF("<!DOCTYPE HTML PUBLIC>\n");
+	HTML_PRINTF("<html lang=\"ru\">\n");
+
+	HTML_PRINTF("\t<head>\n");
+	HTML_PRINTF("\t\t<title>List Dump</title>\n");
+	HTML_PRINTF("\t\t<meta charset=\"utf-8\" />\n");
+	HTML_PRINTF("\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"styles.css\" />\n");
+	HTML_PRINTF("\t</head>\n");
+
+	HTML_PRINTF("\t<body><tt><pre>\n");
+	HTML_PRINTF("\t\t\t\t\t\t\t\t\t\t\t<a class='head'>MEGA DUMP</a><br>\n");
+
+#undef HTML_PRINTF
+
+	if (fclose(html_file))
+		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
+
+	return LIST_NO_ERROR;
+}
+
+ListStatusCode ListCssFile() {
+
+	FILE* css_file = fopen(CSS_FILE_, "w");
+	if (!css_file)
+		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
+
+#define CSS_PRINTF(...) fprintf(css_file, __VA_ARGS__);
+
+	CSS_PRINTF("body {\n"\
+			   "\tbackground-color: #FFFAFA;\n"\
+			   "}\n");
+
+	CSS_PRINTF("h1 {\n"\
+			   "\ttext-align: center;\n"\
+			   "}\n");
+
+	CSS_PRINTF("b {\n"\
+			   "\ttext-decoration: underline;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".head {\n"\
+			   "\tfont-size: 2em;\n"\
+    		   "\tfont-weight: bold;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".addr {\n"\
+			   "\tcolor: #4B0082;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".path {\n"\
+			   "\tcolor: #FFA500;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".line {\n"\
+			   "\tcolor: #20B2AA;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".name {\n"\
+			   "\tcolor: #7B68EE;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".dump {\n"\
+			   "\tbackground-color: #F7F7F7;\n"\
+			   "\tborder: 1px solid #C6C1C1;\n"\
+			   "\tborder-radius: 20px;\n"\
+			   "\tpadding: 25px 0px;\n"\
+			   "\tmargin: 20px 0px;\n"\
+			   "\twidth: 90%%;"\
+			   "\tdisplay: inline-block;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".num {\n"\
+			   "\tcolor: #BDB76B;\n"\
+			   "}\n");
+
+	CSS_PRINTF(".func {\n"\
+			   "\tcolor: #8B008B;"\
+			   "}\n");
+
+	CSS_PRINTF(".img {\n"\
+			   "\twidth: 90%%;\n"\
+			   "\theight: 70%%;\n"\
+			   "\tobject-fit: contain;\n"\
+			   "}\n");
+
+#undef CSS_PRINTF
+
+	if (fclose(css_file))
+		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
+
+	return LIST_NO_ERROR;
+}
+
+ListStatusCode ListCreateDumpDir() {
+
 	DIR* dump_dir = opendir(DUMP_DIR_);
 	if (dump_dir) {
 		if (closedir(dump_dir))
@@ -18,31 +127,6 @@ ListStatusCode ListHtmlDumpStart() {
 			LIST_ERROR_CHECK(LIST_DIR_CLOSE_ERROR);
 	}
 
-	FILE* html_file = fopen(HTML_FILE_, "w");
-	if (!html_file)
-		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
-
-#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
-
-	HTML_PRINTF("<!DOCTYPE HTML PUBLIC>\n");
-	HTML_PRINTF("<html>\n");
-
-	HTML_PRINTF("\t<head>\n");
-	HTML_PRINTF("\t\t<title>List Dump</title>\n");
-	HTML_PRINTF("\t</head>\n");
-
-	HTML_PRINTF("\t<body style='background-color: #F1F1F1'>\n");
-
-	HTML_PRINTF("\t\t<pre>\n");
-	HTML_PRINTF("\t\t<tt>\n");
-
-	HTML_PRINTF("\t\t<h1 align='center'>MEGA DUMP</h1>\n");
-
-#undef HTML_PRINTF
-
-	if (fclose(html_file))
-		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
-
 	return LIST_NO_ERROR;
 }
 
@@ -54,10 +138,7 @@ ListStatusCode ListHtmlDumpFinish() {
 
 #define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
 
-	HTML_PRINTF("\t\t</tt>\n");
-	HTML_PRINTF("\t\t</pre>\n");
-
-	HTML_PRINTF("\t</body>\n");
+	HTML_PRINTF("\t</pre></tt></body>\n");
 	HTML_PRINTF("</html>\n");
 
 #undef HTML_PRINTF
@@ -65,15 +146,21 @@ ListStatusCode ListHtmlDumpFinish() {
 	if (fclose(html_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
+#ifdef OPEN_HTML_FILE
 	system(OPEN HTML_FILE_);
+#endif
 
 	return LIST_NO_ERROR;
 }
 
-ListStatusCode ListBashScript(List* list) {
+ListStatusCode ListBashScript(List* list, DumpLogInfo dump_info) {
 
 	static size_t script_num = 1;
-	static ListLogInfo prev_info = {};
+	static struct PrevLogInfo {
+		const char* file_name;
+		size_t line;
+		const char* var_name;
+	} prev_info;
 
 	FILE* bash_script = fopen(BASH_FILE_, "w");
 	if (!bash_script)
@@ -99,15 +186,13 @@ ListStatusCode ListBashScript(List* list) {
 
 #define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
 
-	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 && prev_info.line != list->info.line && StrCmp(prev_info.name, list->info.name) != 0) {
-		HTML_PRINTF("\t\t<h2 style='text-decoration: underline'><p style='text-align: center'>");
-		HTML_PRINTF("List[<span style='color: #4B0082;'>%p</span>] ", list);
-		HTML_PRINTF("born at <span style='color: #FFA500;'>%s</span>: ", (prev_info.file_name = list->info.file_name));
-		HTML_PRINTF("<span style='color: #20B2AA;'>%zu</span>, ", (prev_info.line = list->info.line));
-		HTML_PRINTF("name '<span style='color: #7B68EE;'>%s</span>'</p></h2>\n", (prev_info.name = list->info.name));
-	}
+	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 && prev_info.line != list->info.line && StrCmp(prev_info.var_name, list->info.name) != 0)
+		HTML_PRINTF("\t\t\t\t\t\t<b>List[%p] born at \"%s\": %zu, name '%s'</b>\n", \
+					list, (prev_info.file_name = list->info.file_name), (prev_info.line = (size_t)list->info.line), (prev_info.var_name = list->info.name));
 
-	HTML_PRINTF("\t\t<img src='%s%zu%s' style='width: 80%%'>\n", IMG_FILE_, script_num++, IMG_EXTENSION);
+	HTML_PRINTF("\t<div class='dump'>\n");
+	HTML_PRINTF("\tDUMP #%zu: function %s was called from %s: %zu\n", script_num, dump_info.func, dump_info.file, dump_info.line);
+	HTML_PRINTF("\t<img src='%s%zu%s' class='img'></div>\n\n", IMG_FILE_, script_num++, IMG_EXTENSION);
 
 #undef HTML_PRINTF
 
@@ -117,7 +202,7 @@ ListStatusCode ListBashScript(List* list) {
 	return LIST_NO_ERROR;
 }
 
-ListStatusCode ListGraphDump(List* list) {
+ListStatusCode ListGraphDump(List* list, DumpLogInfo dump_info) {
 
 	ListStatusCode list_status = LIST_NO_ERROR;
 
@@ -139,7 +224,7 @@ ListStatusCode ListGraphDump(List* list) {
 	if (fclose(dot_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
-	list_status = ListBashScript(list);
+	list_status = ListBashScript(list, dump_info);
 	LIST_ERROR_CHECK(list_status);
 
 	return LIST_NO_ERROR;

@@ -30,9 +30,9 @@ typedef int Indexes_t;
 	LIST_ERROR_CHECK(list_status);						\
 }
 
-#define LIST_GRAPH_DUMP(list) {							 \
-	list_status = ListGraphDump(list);					\
-	LIST_ERROR_CHECK(list_status);						\
+#define LIST_GRAPH_DUMP(list, func_name) {							 								 \
+	list_status = ListGraphDump(list, {.file = __FILE__, .line = __LINE__, .func = func_name}); 	 \
+	LIST_ERROR_CHECK(list_status);																	\
 }
 
 #define LIST_CTOR(list) {								 \
@@ -42,23 +42,23 @@ typedef int Indexes_t;
 	LIST_HTML_DUMP_START();								\
 }
 
-#define LIST_VERIFY(list, ...) {						\
+#define LIST_VERIFY(list, ...) {						 \
 	list_status = ListVerify(list, __VA_ARGS__);		\
 	LIST_ERROR_CHECK(list_status);						\
 }
 
-#define LIST_INSERT_AFTER(list, ...) {					\
+#define LIST_INSERT_AFTER(list, ...) {					 \
 	list_status = ListInsertAfter(list, __VA_ARGS__); 	\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
-	LIST_GRAPH_DUMP(list);								\
+	LIST_GRAPH_DUMP(list, "INSERT_AFTER");				\
 }
 
-#define LIST_OUTSERT(list, ...) {						\
+#define LIST_OUTSERT(list, ...) {						 \
 	list_status = ListOutsert(list, __VA_ARGS__); 		\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
-	LIST_GRAPH_DUMP(list);								\
+	LIST_GRAPH_DUMP(list, "OUTSERT");					\
 }
 
 #define LIST_DTOR(list) {								 \
@@ -68,9 +68,9 @@ typedef int Indexes_t;
 }
 
 struct ListLogInfo {
-	char* name;
-	char* file_name;
-	size_t line;
+	const char* name;
+	const char* file_name;
+	const size_t line;
 };
 
 struct Data_elem {
