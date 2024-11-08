@@ -33,6 +33,12 @@ ListStatusCode ListVerify(List* list, Indexes_t pos) {
 
 	ListStatusCode list_status = LIST_NO_ERROR;
 
+	if (!list)
+		return LIST_NULL_POINTER;
+
+	if (!list->elems)
+		return LIST_NULL_POINTER;
+
 	if (list->size > list->capacity)
 		return LIST_SIZE_ABOVE_CAPACITY;
 

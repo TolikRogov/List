@@ -1,5 +1,7 @@
 #include "Lists_dump.hpp"
 
+long AMOUNT_OF_LAST_SYMBOLS = 0;
+
 ListStatusCode ListHtmlDumpStart() {
 
 	ListStatusCode list_status = LIST_NO_ERROR;
@@ -136,7 +138,9 @@ ListStatusCode ListHtmlDumpFinish() {
 	if (!html_file)
 		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
 
-#define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
+	AMOUNT_OF_LAST_SYMBOLS = 0;
+
+#define HTML_PRINTF(...) AMOUNT_OF_LAST_SYMBOLS += fprintf(html_file, __VA_ARGS__);
 
 	HTML_PRINTF("\t</pre></tt></body>\n");
 	HTML_PRINTF("</html>\n");
@@ -180,11 +184,16 @@ ListStatusCode ListBashScript(List* list, DumpLogInfo dump_info) {
 
 	system("chmod +x " BASH_FILE_ "; ./" BASH_FILE_);
 
-	FILE* html_file = fopen(HTML_FILE_, "a");
+	FILE* html_file = fopen(HTML_FILE_, "r+");
 	if (!html_file)
 		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
 
+	fseek(html_file, 0, SEEK_END);
+
 #define HTML_PRINTF(...) fprintf(html_file, __VA_ARGS__);
+
+	if (AMOUNT_OF_LAST_SYMBOLS)
+		fseek(html_file, -AMOUNT_OF_LAST_SYMBOLS, SEEK_END);
 
 	if (StrCmp(prev_info.file_name, list->info.file_name) != 0 || prev_info.line != list->info.line || StrCmp(prev_info.var_name, list->info.name) != 0)
 		HTML_PRINTF("\t\t\t\t\t\t<b>List[%p] born at \"%s\": %zu, name '%s'</b>\n", \

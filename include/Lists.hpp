@@ -61,6 +61,7 @@ typedef int Indexes_t;
 }
 
 #define LIST_DTOR(list) {								 \
+	LIST_HTML_DUMP_FINISH();							\
 	list_status = ListDtor(list);						\
 	LIST_ERROR_CHECK(list_status);						\
 }

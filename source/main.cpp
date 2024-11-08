@@ -10,7 +10,7 @@ int main() {
 	LIST_CTOR(&list);
 
 	Indexes_t j = 0;
-	for (Data_t i = 10; i < 300 && j < (Indexes_t)list.capacity; i += 10, j++)
+	for (Data_t i = 10; i < 100 && j < (Indexes_t)list.capacity; i += 10, j++)
 		LIST_INSERT_AFTER(&list, i, j);
 
 	Data_t x = 0;
@@ -28,9 +28,11 @@ int main() {
 
 	LIST_INSERT_AFTER(&list, 999, 5);
 
-	LIST_DTOR(&list2);
 	LIST_DTOR(&list);
 
-	LIST_HTML_DUMP_FINISH();
+	LIST_OUTSERT(&list2, &x, 5);
+
+	LIST_DTOR(&list2);
+
 	return 0;
 }

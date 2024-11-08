@@ -8,7 +8,7 @@
 
 #define DOT_FILE_ 		DUMP_DIR_ "graph.dot"
 #define IMG_FILE_  		IMG_DIR_  "graph"
-#define HTML_FILE_ 		DUMP_DIR_ "main.html"
+#define HTML_FILE_ 		DUMP_DIR_ "list.html"
 #define CSS_FILE_		DUMP_DIR_ "styles.css"
 #define BASH_FILE_		DUMP_DIR_ "script.bash"
 

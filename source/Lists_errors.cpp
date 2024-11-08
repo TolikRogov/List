@@ -5,6 +5,7 @@ const char* ListErrorsMessenger(ListStatusCode status) {
 		case LIST_NO_ERROR:						return "LIST ERROR - NO ERROR";
 
 		case LIST_ALLOC_ERROR:					return "LIST ERROR - MEMORY ALLOCATION ERROR";
+		case LIST_NULL_POINTER:					return "LIST ERROR - POINTER IS NULL";
 
 		case LIST_FULL_LIST:					return "LIST ERROR - LIST IS FULL";
 		case LIST_SIZE_ABOVE_CAPACITY:			return "LIST ERROR - LIST SIZE ABOVE THAN CAPACITY";
