@@ -11,6 +11,12 @@ b {
 	font-size: 2em;
 	font-weight: bold;
 }
+.circle {
+	display: inline-block;
+	border-radius: 50%;
+	border: 1px solid;
+	padding: 10px;
+}
 .addr {
 	color: #4B0082;
 }

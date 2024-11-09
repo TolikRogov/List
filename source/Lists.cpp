@@ -46,10 +46,12 @@ ListStatusCode ListVerify(List* list, Indexes_t pos) {
 	size_t cur_size = 1;
 	while (index != 0) {
 		cur_size++;
+		if (index != list->elems[list->elems[index].next].prev)
+			return LIST_OUTSIDE_INTERFERENCE;
 		index = list->elems[index].next;
 	}
 	if (cur_size != list->size)
-		return LIST_CYCLE_ERROR;
+		return LIST_LOOP_ERROR;
 
 	if (list->size == list->capacity) {
 		list_status = ListRealloc(list);
@@ -58,6 +60,9 @@ ListStatusCode ListVerify(List* list, Indexes_t pos) {
 
 	if (list->elems[list->free].prev != -1)
 		return LIST_WRONG_FREE_ELEMENT;
+
+	if (list->elems[pos].prev == -1)
+		return LIST_INSERT_AFTER_FREE;
 
 	if (pos < 0 || pos > (Indexes_t)list->capacity || pos > list->free + 1)
 		return LIST_WRONG_ELEMENT_POSITION;

@@ -2,6 +2,37 @@
 
 long AMOUNT_OF_LAST_SYMBOLS = 0;
 
+static struct Colors {
+	const char* background 						= "\"#F1D1D1\"";
+	const char* occupied_node 		 			= "\"#f1ab86\"";
+	const char* occupied_node_border 			= "\"#c57b57\"";
+	const char* free_node						= "\"#bcb8b1\"";
+	const char* free_node_border 				= "\"#8a817c\"";
+	const char* prev_arrows						= "\"#228B22\"";
+	const char* next_arrows 					= "\"#DC143C\"";
+	const char* head 							= "\"#c5dca0\"";
+	const char* head_border 					= "\"#94AF68\"";
+	const char* head_font 						= "\"#000000\"";
+	const char* tail 							= "\"#f5f2b8\"";
+	const char* tail_border 					= "\"#C4BF68\"";
+	const char* tail_font						= "\"#000000\"";
+	const char* head_arrow 						= "\"#6AC4E2\"";
+	const char* tail_arrow						= "\"#E86F4A\"";
+	const char* free 							= "\"#D1D1D5\"";
+	const char* free_border 					= "\"#bdbbb6\"";
+	const char* free_arrow 						= "\"#BBA59F\"";
+	const char* free_font						= "\"#000000\"";
+	const char* both_dir_arrow					= "\"#CF7FEA\"";
+	const char* zero_node 						= "\"#a491d3\"";
+	const char* zero_node_border 				= "\"#818aa3\"";
+	const char* zero_next_arrow 				= "\"#B8A766\"";
+	const char* zero_prev_arrow 				= "\"#89806A\"";
+	const char* insert_node 					= "\"#90a955\"";
+	const char* insert_node_border 				= "\"#4f772d\"";
+	const char* outsert_node 					= "\"#DD403A\"";
+	const char* outsert_node_border 			= "\"#7b0d1e\"";
+} color;
+
 ListStatusCode ListHtmlDumpStart() {
 
 	ListStatusCode list_status = LIST_NO_ERROR;
@@ -29,6 +60,25 @@ ListStatusCode ListHtmlDumpStart() {
 
 	HTML_PRINTF("\t<body><tt><pre>\n");
 	HTML_PRINTF("\t\t\t\t\t\t\t\t\t\t\t<a class='head'>MEGA DUMP</a><br>\n");
+
+	HTML_PRINTF("\t<div class='dump'>\n");
+	HTML_PRINTF("\tColors meanings: \n");
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>occupied node</div>", color.occupied_node + 1, color.occupied_node_border + 1);
+	HTML_PRINTF("\t\t<span style='color: %.7s'>&#11153; prev arrows</span>\n", color.prev_arrows + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>free node</div>", color.free_node + 1, color.free_node_border + 1);
+	HTML_PRINTF("\t\t\t<span style='color: %.7s'>&#11153; next arrows</span>\n", color.next_arrows + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>head</div>", color.head + 1, color.head_border + 1);
+	HTML_PRINTF("\t\t\t\t<span style='color: %.7s'>&#11153; head arrow</span>\n", color.head_arrow + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>tail</div>", color.tail + 1, color.tail_border + 1);
+	HTML_PRINTF("\t\t\t\t<span style='color: %.7s'>&#11153; tail arrow</span>\n", color.tail_arrow + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>free</div>", color.free + 1, color.free_border + 1);
+	HTML_PRINTF("\t\t\t\t<span style='color: %.7s'>&#11153; free arrow</span>\n", color.free_arrow + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>zero node</div>", color.zero_node + 1, color.zero_node_border + 1);
+	HTML_PRINTF("\t\t\t<span style='color: %.7s'>&#11153; zero next arrow</span>\n", color.zero_next_arrow + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>insert node</div>", color.insert_node + 1, color.insert_node_border + 1);
+	HTML_PRINTF("\t\t\t<span style='color: %.7s'>&#11153; zero prev arrow</span>\n", color.zero_prev_arrow + 1);
+	HTML_PRINTF("\t\t<div class='circle' style='background-color: %.7s; border-color: %.7s;'>outsert node</div>\n", color.outsert_node + 1, color.outsert_node_border + 1);
+	HTML_PRINTF("\t</div>\n\n");
 
 #undef HTML_PRINTF
 
@@ -62,6 +112,13 @@ ListStatusCode ListCssFile() {
 			   "\tfont-size: 2em;\n"\
     		   "\tfont-weight: bold;\n"\
 			   "}\n");
+
+	CSS_PRINTF(".circle {\n"\
+			"\tdisplay: inline-block;\n"\
+			"\tborder-radius: 50%%;\n"\
+			"\tborder: 1px solid;\n"\
+			"\tpadding: 10px;\n"\
+			"}\n");
 
 	CSS_PRINTF(".addr {\n"\
 			   "\tcolor: #4B0082;\n"\
@@ -150,10 +207,6 @@ ListStatusCode ListHtmlDumpFinish() {
 	if (fclose(html_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
-#ifdef OPEN_HTML_FILE
-	system(OPEN HTML_FILE_);
-#endif
-
 	return LIST_NO_ERROR;
 }
 
@@ -219,179 +272,85 @@ ListStatusCode ListGraphDump(List* list, DumpLogInfo dump_info) {
 	if (!dot_file)
 		LIST_ERROR_CHECK(LIST_FILE_OPEN_ERROR);
 
-	fprintf(dot_file, "digraph {\n");
+#define DOT_PRINTF(...) fprintf(dot_file, __VA_ARGS__);
 
-	fprintf(dot_file, "\trankdir = LR;\n");
-	fprintf(dot_file, "\tfontname = \"UbuntuMono\";\n");
-	fprintf(dot_file, "\tbgcolor = \"#F1D1D1\";\n");
+	DOT_PRINTF("digraph {\n");
 
-	ListGraphFreeCluster(list, dot_file);
-	ListGraphCaptiveCluster(list, dot_file);
+	DOT_PRINTF("\trankdir = LR;\n");
+	DOT_PRINTF("\tfontname = \"UbuntuMono\";\n");
+	DOT_PRINTF("\tbgcolor = %s;\n\n", color.background);
 
-	fprintf(dot_file, "}\n");
+	DOT_PRINTF("\tsubgraph cluster_nodes {\n");
+	DOT_PRINTF("\t\tperipheries = 0;\n");
+	DOT_PRINTF("\t\tnode000 [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3d | data = %d | <next> next = %d | <prev> prev = %d \"; ];\n",
+						color.zero_node, color.zero_node_border, 0, list->elems[0].data, list->elems[0].next, list->elems[0].prev);
+	for (size_t i = 1; i < list->capacity; i++) {
+		if (list->elems[i].prev == -1) {
+			DOT_PRINTF("\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | <next> next = %d | <prev> prev = %d \"; ];\n",
+						 i, color.free_node, color.free_node_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		}
+		else {
+			DOT_PRINTF("\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | <next> next = %d | <prev> prev = %d \"; ];\n",
+						i, color.occupied_node, color.occupied_node_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
+		}
+	}
+
+	if (StrCmp(dump_info.func, "INSERT_AFTER") == 0) {
+		Indexes_t cur_pos = list->elems[dump_info.pos].next;
+		DOT_PRINTF("\t\tnode%.3d [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3d | data = %d | <next> next = %d | <prev> prev = %d \"; ];\n",
+					cur_pos, color.insert_node, color.insert_node_border, cur_pos,
+					list->elems[cur_pos].data, list->elems[cur_pos].next, list->elems[cur_pos].prev);
+	}
+	if (StrCmp(dump_info.func, "OUTSERT") == 0) {
+		DOT_PRINTF("\t\tnode%.3d [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3d | data = %d | <next> next = %d | <prev> prev = %d \"; ];\n",
+					dump_info.pos, color.outsert_node, color.outsert_node_border, dump_info.pos,
+					list->elems[dump_info.pos].data, list->elems[dump_info.pos].next, list->elems[dump_info.pos].prev);
+	}
+
+	for (size_t i = 1; i < list->capacity; i++)
+		DOT_PRINTF("\t\tnode%.3zu -> node%.3zu [ weight = 1000; style = \"invis\"; ];\n", i - 1, i);
+
+	for (size_t i = 0; i < list->capacity; i++) {
+		if (list->elems[i].prev == -1)
+			continue;
+
+		if (fabs((Indexes_t)i - list->elems[i].prev) > 1)
+			DOT_PRINTF("\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].prev, (i == 0 ? color.zero_prev_arrow : color.prev_arrows));
+
+		if (fabs((Indexes_t)i - list->elems[i].next) < 2) {
+			DOT_PRINTF("\t\tnode%.3zu -> node%.3d [ dir = \"both\"; color = %s; ];\n", i, list->elems[i].next, color.both_dir_arrow);
+			continue;
+		}
+
+		DOT_PRINTF("\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, (i == 0 ? color.zero_next_arrow : color.next_arrows));
+	}
+
+	DOT_PRINTF("\t}\n\n");
+
+	DOT_PRINTF("\tsubgraph cluster_utils {\n");
+	DOT_PRINTF("\t\tperipheries = 0;\n");
+	DOT_PRINTF("\t\tnodeHead [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = %s; label = \"HEAD | %d\"; ];\n",
+				color.head, color.head_border, color.head_font, ListGetHead(list));
+	DOT_PRINTF("\t\tnodeTail [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = %s; label = \"TAIL | %d\"; ];\n",
+				color.tail, color.tail_border, color.tail_font, ListGetTail(list));
+	DOT_PRINTF("\t\tnodeFree [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = %s; label = \"FREE | %d\"; ];\n",
+				color.free, color.free_border, color.free_font, list->free);
+	DOT_PRINTF("\t\tnodeHead -> nodeTail [ weight = 1000; style = \"invis\"; ];\n");
+	DOT_PRINTF("\t\tnodeTail -> nodeFree [ weight = 1000; style = \"invis\"; ];\n");
+	DOT_PRINTF("\t\tnodeHead -> node%.3d:<prev> [ style = \"bold\"; color = %s ];\n", ListGetHead(list), color.head_arrow);
+	DOT_PRINTF("\t\tnodeTail -> node%.3d:<prev> [ style = \"bold\"; color = %s ];\n", ListGetTail(list), color.tail_arrow);
+	DOT_PRINTF("\t\tnodeFree -> node%.3d:<prev> [ style = \"bold\"; color = %s ];\n", list->free, color.free_arrow);
+	DOT_PRINTF("\t}\n\n");
+
+	DOT_PRINTF("}\n");
+
+#undef DOT_PRINTF
 
 	if (fclose(dot_file))
 		LIST_ERROR_CHECK(LIST_FILE_CLOSE_ERROR);
 
 	list_status = ListBashScript(list, dump_info);
 	LIST_ERROR_CHECK(list_status);
-
-	return LIST_NO_ERROR;
-}
-
-ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file) {
-
-	struct Colors {
-		const char* bg 				= "\"#FBC4AB\"";
-		const char* edge 			= "\"#F4978E\"";
-		const char* edge_border 	= "\"#B55757\"";
-		const char* cluster_border 	= "\"#966156\"";
-		const char* prev_arrows		= "\"#228B22\"";
-		const char* next_arrows 	= "\"#DC143C\"";
-		const char* head 			= "\"#088F41\"";
-		const char* head_border 	= "\"#014920\"";
-		const char* tail 			= "\"#9B5170\"";
-		const char* tail_border 	= "\"#56243C\"";
-		const char* hat_arrows 		= "\"violet\"";
-	} captive_colors;
-
-#define DOT_PRINTF(...) fprintf(dot_file, __VA_ARGS__);
-
-	DOT_PRINTF("\n");
-
-	DOT_PRINTF("\tsubgraph cluster_captive {\n");
-	DOT_PRINTF("\t\tbgcolor = %s;\n", captive_colors.bg);
-	DOT_PRINTF("\t\tcolor = %s;\n", captive_colors.cluster_border);
-	DOT_PRINTF("\t\tlabel = <<B>Occupied cells</B>>;\n");
-	DOT_PRINTF("\t\tfontcolor = \"#2F4858\";\n");
-	DOT_PRINTF("\t\tfontsize = \"20px\";\n\n");
-
-	DOT_PRINTF("\t\tsubgraph cluster_HeadAndTail {\n");
-	DOT_PRINTF("\t\t\tperipheries = 0\n");
-	DOT_PRINTF("\t\t\tlabel = \"\";\n");
-	DOT_PRINTF("\t\t\tnodeHead [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"HEAD\"; ];\n",
-				captive_colors.head, captive_colors.head_border);
-	DOT_PRINTF("\t\t\tnodeTail [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"white\"; label = \"TAIL\"; ];\n",
-				captive_colors.tail, captive_colors.tail_border);
-	DOT_PRINTF("\t\t\tnodeHead -> nodeTail [ color = %s; ];\n", captive_colors.bg);
-	DOT_PRINTF("\t\t}\n\n");
-
-	DOT_PRINTF("\t\tsubgraph cluster_occupied {\n");
-	DOT_PRINTF("\t\t\tperipheries = 0\n");
-	DOT_PRINTF("\t\t\tlabel = \"\";\n");
-
-	for (size_t i = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev == -1)
-			continue;
-
-		DOT_PRINTF("\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \"; ];\n",
-						 i, captive_colors.edge, captive_colors.edge_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
-	}
-
-	DOT_PRINTF("\n");
-
-	for (size_t i = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev == -1)
-			continue;
-
-		if (list->elems[0].next == (Indexes_t)i)
-			DOT_PRINTF("\t\t\tnodeHead -> node%.3d [ color = %s; ];\n", list->elems[0].next, captive_colors.hat_arrows);
-
-		if (list->elems[0].prev == (Indexes_t)i)
-			DOT_PRINTF("\t\t\tnodeTail -> node%.3d [ color = %s; ];\n", list->elems[0].prev, captive_colors.hat_arrows);
-
-		DOT_PRINTF("\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].next, captive_colors.next_arrows);
-		DOT_PRINTF("\t\t\tnode%.3zu -> node%.3d [ color = %s; ];\n", i, list->elems[i].prev, captive_colors.prev_arrows);
-	}
-	DOT_PRINTF("\t\t}\n\n");
-
-	DOT_PRINTF("\t}\n");
-
-	DOT_PRINTF("\n");
-
-#undef DOT_PRINTF
-
-	return LIST_NO_ERROR;
-}
-
-ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file) {
-
-	struct Colors {
-		const char* bg 				= "\"#DCEAB2\"";
-		const char* edge 			= "\"#5F9A9D\"";
-		const char* edge_border 	= "\"#3B6874\"";
-		const char* cluster_border	= "\"#b1c274\"";
-		const char* free 			= "\"#D1D1D5\"";
-		const char* free_border 	= "\"#C1C1C5\"";
-		const char* free_arrow 		= "\"#34AB34\"";
-	} free_colors;
-
-#define DOT_PRINTF(...) fprintf(dot_file, __VA_ARGS__);
-
-	DOT_PRINTF("\n");
-
-	DOT_PRINTF("\tsubgraph cluster_free {\n");
-	DOT_PRINTF("\t\tbgcolor = %s;\n", free_colors.bg);
-	DOT_PRINTF("\t\tcolor = %s;\n", free_colors.cluster_border);
-	DOT_PRINTF("\t\tlabel = <<B>Free cells</B>>;\n");
-	DOT_PRINTF("\t\tfontcolor = \"#2F4858\";\n");
-	DOT_PRINTF("\t\tfontsize = \"20px\";\n\n");
-
-	DOT_PRINTF("\t\tsubgraph cluster_Free {\n");
-	DOT_PRINTF("\t\t\tperipheries = 0\n");
-	DOT_PRINTF("\t\t\tlabel = \"\";\n");
-	DOT_PRINTF("\t\t\tnodeFree [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; fontcolor = \"black\"; label = \"FREE\"; ];\n",
-				free_colors.free, free_colors.free_border);
-	DOT_PRINTF("\t\t}\n\n");
-
-	DOT_PRINTF("\t\tsubgraph cluster_free {\n");
-	DOT_PRINTF("\t\t\tperipheries = 0\n");
-	DOT_PRINTF("\t\t\tlabel = \"\";\n");
-	for (size_t i = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev != -1)
-			continue;
-
-		DOT_PRINTF("\t\t\tnode%.3zu [ shape = Mrecord; style = filled; fillcolor = %s; color = %s; label = \" %.3zu | data = %d | next = %d | prev = %d \" ];\n",
-					i, free_colors.edge, free_colors.edge_border, i, list->elems[i].data, list->elems[i].next, list->elems[i].prev);
-	}
-
-	fprintf(dot_file, "\n");
-
-	Indexes_t free = 0;
-	DOT_PRINTF("\t\t\tsubgraph cluster_free%.3d {\n", 0);
-	DOT_PRINTF("\t\t\t\tperipheries = 0\n");
-	DOT_PRINTF("\t\t\t\tlabel = \"\";\n");
-	for (size_t i = 0, cnt = 0; i < list->capacity; i++) {
-		if (list->elems[i].prev != -1)
-			continue;
-
-		if (cnt == 0 && (free = (Indexes_t)i)) {
-			cnt++;
-			continue;
-		}
-
-		if (cnt++ % GRAPH_DUMP_INDEX == 0) {
-			DOT_PRINTF("\t\t\t}\n\n");
-			DOT_PRINTF("\t\t\tsubgraph cluster_free%.3zu {\n", cnt / GRAPH_DUMP_INDEX);
-			DOT_PRINTF("\t\t\t\tperipheries = 0\n");
-			DOT_PRINTF("\t\t\t\tlabel = \"\";\n");
-		}
-		else {
-
-			DOT_PRINTF("\t\t\t\tnode%.3d -> node%.3zu [ weight = 1000; color = %s; ];\n", free, i, free_colors.bg);
-		}
-		free = (Indexes_t)i;
-	}
-	DOT_PRINTF("\t\t\t}\n\n");
-
-	if (list->free > 0)
-		DOT_PRINTF("\t\t\tnodeFree -> node%.3d [ weight = 1000; color = %s; ];\n\n", list->free, free_colors.free_arrow);
-
-	DOT_PRINTF("\t\t}\n");
-
-	DOT_PRINTF("\t}\n\n");
-
-#undef DOT_PRINTF
 
 	return LIST_NO_ERROR;
 }

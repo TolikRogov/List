@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <dirent.h>
+#include <math.h>
 #include "Lists_errors.hpp"
 
 typedef int Data_t;
@@ -30,9 +31,9 @@ typedef int Indexes_t;
 	LIST_ERROR_CHECK(list_status);						\
 }
 
-#define LIST_GRAPH_DUMP(list, func_name) {							 								 \
-	list_status = ListGraphDump(list, {.file = __FILE__, .line = __LINE__, .func = func_name}); 	 \
-	LIST_ERROR_CHECK(list_status);																	\
+#define LIST_GRAPH_DUMP(list, func_name, place) {							 							 		 \
+	list_status = ListGraphDump(list, {.file = __FILE__, .line = __LINE__, .func = func_name, .pos = place}); 	 \
+	LIST_ERROR_CHECK(list_status);																				\
 }
 
 #define LIST_CTOR(list) {								 \
@@ -46,18 +47,18 @@ typedef int Indexes_t;
 	LIST_ERROR_CHECK(list_status);						\
 }
 
-#define LIST_INSERT_AFTER(list, ...) {					 \
-	list_status = ListInsertAfter(list, __VA_ARGS__); 	\
-	LIST_ERROR_CHECK(list_status);						\
-	LST_CON_DUMP_(list);								\
-	LIST_GRAPH_DUMP(list, "INSERT_AFTER");				\
+#define LIST_INSERT_AFTER(list, element, pos) {				 \
+	list_status = ListInsertAfter(list, element, pos); 		\
+	LIST_ERROR_CHECK(list_status);							\
+	LST_CON_DUMP_(list);									\
+	LIST_GRAPH_DUMP(list, "INSERT_AFTER", pos);				\
 }
 
-#define LIST_OUTSERT(list, ...) {						 \
-	list_status = ListOutsert(list, __VA_ARGS__); 		\
+#define LIST_OUTSERT(list, var_addr, pos) {				 \
+	list_status = ListOutsert(list, var_addr, pos); 	\
 	LIST_ERROR_CHECK(list_status);						\
 	LST_CON_DUMP_(list);								\
-	LIST_GRAPH_DUMP(list, "OUTSERT");					\
+	LIST_GRAPH_DUMP(list, "OUTSERT", pos);				\
 }
 
 #define LIST_DTOR(list) {								 \
@@ -94,7 +95,7 @@ enum DumpCheck {
 	ALREADY_ON	= 3,
 };
 
-const size_t LIST_DEFAULT_DATA_CAPACITY = 20;
+const size_t LIST_DEFAULT_DATA_CAPACITY = 10;
 
 const size_t LIST_TRASH = 0xDED104;
 

@@ -24,15 +24,13 @@ struct DumpLogInfo {
 	const char* file;
 	const size_t line;
 	const char* func;
+	const Indexes_t pos;
 };
 
 ListStatusCode ListCreateDumpDir();
 ListStatusCode ListCssFile();
 
 ListStatusCode ListGraphDump(List* list, DumpLogInfo dump_info);
-
-ListStatusCode ListGraphCaptiveCluster(List* list, FILE* dot_file);
-ListStatusCode ListGraphFreeCluster(List* list, FILE* dot_file);
 
 ListStatusCode ListBashScript(List* list, DumpLogInfo dump_info);
 
